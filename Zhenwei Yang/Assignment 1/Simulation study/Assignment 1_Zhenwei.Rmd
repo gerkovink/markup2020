@@ -6,3 +6,74 @@ output: html_document
 ---
 
 
+# Perform a small simulation that does the following:
+
+a. Sample 100 samples from a standard normal distribution.
+
+b. For each of these samples, calculate the following statistics for the mean:
+
+*absolute bias
+
+*standard error
+
+*lower bound of the 95% confidence interval
+
+*upper bound of the 95% confidence interval
+
+c. Create a plot that demonstrates the following:
+
+` “A replication of the procedure that generates a 95% confidence interval that is centered around the `
+`sample mean would cover the population value at least 95 out of 100 times” (Neyman, 1934)`
+
+Present a table containing all simulated samples for which the resulting confidence interval does not contain the population value.
+
+1. load library 
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+2. create seeds and samples
+```{r}
+set.seed(524)
+sim_res <- replicate(100, sample(rnorm(100),100),simplify = F)
+```
+
+3. summarize in the table
+```{r}
+bias <- sim_res %>% 
+  lapply(mean) %>% unlist
+
+abs_bias <- abs(bias)
+  
+se <- sim_res %>% 
+  lapply(sd) %>% unlist / sqrt(100)
+
+lower_bound <- bias - 1.96 * se
+
+upper_bound <- bias + 1.96 * se
+
+tbl <- data.frame(sample = 1:100,
+                  bias,
+                  abs_bias,
+                  se,
+                  lower_bound,
+                  upper_bound,
+                  cover = as.factor(lower_bound < 0 & upper_bound > 0))
+colnames(tbl) <- c("sample ID", "Mean", "absolute bias", "standard error", "95%CI lower bound", "95%CI upper bound", "Cover")
+```
+
+4. plot
+```{r}
+ggplot(tbl,aes(y = Mean, x = `sample ID`, color = Cover)) + 
+  geom_point(aes(color = tbl$Cover)) +
+  geom_hline(aes(yintercept = 0),color = "gray", size =2) +
+  geom_pointrange( aes(ymin = tbl$`95%CI lower bound`, ymax = tbl$`95%CI upper bound`, color=Cover))
+```
+
+5. yield a table
+```{r}
+tbl %>%
+  filter(Cover == F)
+```
+
