@@ -9,6 +9,7 @@
         - Statistical Modeling
         - Hypothesis Testing
         - Metascience
+
     - Experience
         - Research Assistant, Department of Methodology and Statistics, Utrecht University, 2020 - Current
         - Research Assistant, SKK Graduate School of Business, Sungkyunkwan University, 2018
