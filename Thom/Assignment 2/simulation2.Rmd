@@ -75,7 +75,7 @@ results %>%
   filter(!Covered) %>%
   knitr::kable(digits = 3) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), 
-                position = "float_left",
+                position = "left",
                 full_width = FALSE)
 ```
 
@@ -99,7 +99,7 @@ samples_v2 <- map(1:100, function(x) rnorm(1000))
 
 ## Obtain the results
 
-Fortunately, we already created a function that extracts whatever we want to know from the samples. 
+Fortunately, we already created a function that extracts whatever we want to know from the samples. We use this function again, and also create the coverage of every sample.
 
 ```{r}
 results_v2 <- samples_v2 %>% 
@@ -109,6 +109,8 @@ results_v2$Covered <- results_v2$lower < 0 & 0 < results_v2$upper
 ```
 
 ## Visualize
+
+Now, we once again visualize the samples that do not cover the population mean.
 
 ```{r, dpi=500, fig.width=7, fig.height=4}
 ggplot(results_v2, mapping = aes(color = Covered)) +
@@ -122,12 +124,21 @@ ggplot(results_v2, mapping = aes(color = Covered)) +
 
 ## Expose inaccurate samples
 
+And expose the results of the inaccurate samples. 
+
 ```{r}
 results_v2 %>%
   filter(!Covered) %>%
   knitr::kable(digits = 3) %>%
   kable_styling(bootstrap_options = c("striped", "hover"), 
-                position = "float_left",
+                position = "left",
                 full_width = FALSE)
 ```
 
+Out of a sudden, we now see that there are 8 samples that do not cover the population mean (which may of course happen due to chance). 
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
