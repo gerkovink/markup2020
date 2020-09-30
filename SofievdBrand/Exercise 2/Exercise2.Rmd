@@ -92,3 +92,10 @@ imsub(im, x >= xbegin, x <= xend, y >= ybegin, y <= yend) %>% plot
 
 What would this mystery image be? 
 
+# Session info
+
+```{r}
+sessionInfo()
+```
+
+
