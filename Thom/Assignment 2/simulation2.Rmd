@@ -1,0 +1,133 @@
+---
+title: "Simulations II"
+author: 
+- Thom Volker
+date: "`r format(Sys.time(), '%d-%m-%Y')`"
+output: 
+  html_document:
+    theme: spacelab
+    highlight: tango
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    number_sections: true
+---
+
+# Initial study
+
+Loading `tidyverse`, `knitr` and `kableExtra` first, before continuing to the exercises, and set a seed for reproducibility.
+
+## Set seed and load packages
+
+```{r, message = F, warning=F}
+set.seed(1)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+## Simulate
+
+Now, we create 100 samples consisting of 1000 observations. 
+
+```{r}
+samples <- map(1:100, function(x) rnorm(1000))
+```
+
+Additionally, we obtain the estimates from the samples such as the mean, the standard error, and the lower and upper bound of the 95% confidence interval.
+
+```{r}
+estimates <- function(x) {
+  mu <- mean(x)
+  se <- sqrt(sum((x - mu)^2) / (length(x)-1)) / sqrt(length(x))
+  lower <- mu + qnorm(0.025) * se
+  upper <- mu + qnorm(0.975) * se
+  
+  return(data.frame(Mean = mu, bias = abs(mu), sd = se, lower = lower, upper = upper))
+}
+```
+
+We store the results in an object called results, and add the sample id for convenience. Also, we compute the coverage rate of the population mean in the sample.
+
+```{r}
+results <- samples %>% 
+  map_dfr(function(x) estimates(x), .id = "Sample")
+
+results$Covered <- results$lower < 0 & 0 < results$upper
+```
+
+## Visualize
+
+```{r, dpi=500, fig.width=7, fig.height=4}
+ggplot(results, mapping = aes(color = Covered)) +
+  geom_point(mapping = aes(x = as.numeric(Sample), y = Mean)) +
+  geom_errorbar(aes(x = as.numeric(Sample), ymin = lower, ymax = upper), width = .2) +
+  scale_color_brewer(palette = "Set1") +
+  xlab("Sample id") +
+  ylab("Mean and CI") +
+  theme_linedraw()
+```
+
+## Expose inaccurate samples
+
+```{r}
+results %>%
+  filter(!Covered) %>%
+  knitr::kable(digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                position = "float_left",
+                full_width = FALSE)
+```
+
+# Replication
+
+Now, we want to replicate the initial study, which can be done easily by doing the same thing, with a different seed. Although it is not required to set the seed manually, we still do it, so that others do not necessarily have to run both pieces of code to reproduce the results.
+
+## Set seed
+
+```{r}
+set.seed(2)
+```
+
+## Simulate
+
+Create 100 new samples, that differ from the previous samples. 
+
+```{r}
+samples_v2 <- map(1:100, function(x) rnorm(1000))
+```
+
+## Obtain the results
+
+Fortunately, we already created a function that extracts whatever we want to know from the samples. 
+
+```{r}
+results_v2 <- samples_v2 %>% 
+  map_dfr(function(x) estimates(x), .id = "Sample")
+
+results_v2$Covered <- results_v2$lower < 0 & 0 < results_v2$upper
+```
+
+## Visualize
+
+```{r, dpi=500, fig.width=7, fig.height=4}
+ggplot(results_v2, mapping = aes(color = Covered)) +
+  geom_point(mapping = aes(x = as.numeric(Sample), y = Mean)) +
+  geom_errorbar(aes(x = as.numeric(Sample), ymin = lower, ymax = upper), width = .2) +
+  scale_color_brewer(palette = "Set1") +
+  xlab("Sample id") +
+  ylab("Mean and CI") +
+  theme_linedraw()
+```
+
+## Expose inaccurate samples
+
+```{r}
+results_v2 %>%
+  filter(!Covered) %>%
+  knitr::kable(digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                position = "float_left",
+                full_width = FALSE)
+```
+
