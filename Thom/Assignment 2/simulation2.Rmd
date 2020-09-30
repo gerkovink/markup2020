@@ -28,7 +28,7 @@ library(kableExtra)
 
 ## Simulate
 
-Now, we create 100 samples consisting of 1000 observations. 
+Now, we create 100 samples consisting of 1000 observations from a $\mathcal{N}(0,1)$ standard normal distribution. 
 
 ```{r}
 samples <- map(1:100, function(x) rnorm(1000))
@@ -142,3 +142,7 @@ Out of a sudden, we now see that there are 8 samples that do not cover the popul
 ```{r}
 sessionInfo()
 ```
+
+Have a mice day! 
+
+![](happy_mouse.gif)
