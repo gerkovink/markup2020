@@ -47,7 +47,7 @@ This document demonstrates a simulation study that focuses on survival analysis.
 
 This study would simulate 100 participants for 50 time intervals and then replicate for 1000 times. The longitudinanl setting is illustrated as below: 
 
-Let's assume that one predictor that can explain the survival time, denoted as P and treatment usage, deonted as T. Note that T is a time-varying variable which means the status will be changeable at different time points while P is time-invariant. At each time point, the occurance of death as well as treatment follows a logistic distribuiton: 
+Let's assume that one predictor that can explain the survival time, denoted as P and treatment usage, deonted as T. Note that T is a time-varying variable which means the status will be changeable at different time points while P is time-invariant. At each time point, the occurance of death as well as treatment follows a exponential distribuiton: 
 
 $$\begin{aligned}
 E(Y) = exp(a0 + a1*P + a2*T)
