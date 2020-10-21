@@ -41,3 +41,8 @@ points(Output,col="red")
 
 
 ### Thankfully, it shows that the means of the replications are nicely centered around the true value. Provided the low SD for the sampling method this is to be expected.  
+
+### Add session_info
+```{r}
+sessionInfo()
+```
