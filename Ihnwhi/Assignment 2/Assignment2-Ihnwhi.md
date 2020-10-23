@@ -28,8 +28,7 @@ sample(state.name, 5)
 ```
 
 ```
-## [1] "Massachusetts" "Kansas"        "Mississippi"   "North Dakota" 
-## [5] "Pennsylvania"
+## [1] "Oklahoma"    "Oregon"      "Hawaii"      "Mississippi" "Vermont"
 ```
 ## 2. Fixes the RNG seed
 
