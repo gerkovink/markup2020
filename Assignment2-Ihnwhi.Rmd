@@ -1,0 +1,29 @@
+---
+title: "Markup Languages and Reproducible Programming in Statistics"
+subtitle: Week 2 Exercise
+author:
+    - "[Ihnwhi Heo](https://ihnwhiheo.github.io/)"
+    - Department of Methodology and Statistics, Utrecht University
+date: 'Last modified: `r Sys.setlocale("LC_TIME", "English"); format(Sys.time(), "%d
+  %B %Y")`'
+output:
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r eval = TRUE, echo = FALSE, cache = TRUE}
+a <- 100
+```
+
+`this`
+
+`r a*3`
+
+$X \sim \mathcal{N}(\mu,\,\sigma^{2})$
+$$X \sim \mathcal{N}(\mu,\,\sigma^{2})$$
+
