@@ -23,3 +23,9 @@ output:
 $X \sim \mathcal{N}(\mu,\,\sigma^{2})$
 $$X \sim \mathcal{N}(\mu,\,\sigma^{2})$$
 
+
+First Header     | Second Header
+---------------- | -------------
+Content Cell 1,1 | Content Cell 1,2
+Content Cell 2,1 | Content Cell 2,2
+
