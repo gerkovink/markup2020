@@ -1,0 +1,32 @@
+---
+title: "Exercise 2"
+author: "Yongchao Terry Ma"
+date: "10/24/2020"
+output: 
+  html_document:
+    theme: lumen
+---
+
+# Fix the RNG seed
+```{r}
+set.seed(123)
+```
+
+# Replicate a result
+```{r}
+data <- rnorm(100, 0, 1)
+s <- sample(data, 10)
+mean(s)
+```
+
+You can see the mean is 0.2711429 for every render.
+
+---
+
+END OF DOCUMENT
+
+---
+
+```{r}
+sessionInfo()
+```
