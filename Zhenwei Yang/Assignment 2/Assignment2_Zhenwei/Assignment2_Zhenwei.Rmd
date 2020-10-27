@@ -1,0 +1,185 @@
+---
+title: "Assignment2_Zhenwei"
+author: "Zhenwei Yang"
+date: "9/30/2020"
+output: html_document
+  
+---
+
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 12px;
+  }
+td {  /* Table  */
+  font-size: 12px;
+}
+h1.title {
+  font-size: 20px;
+  color: DarkGreen;
+}
+h1 { /* Header 1 */
+  font-size: 18px;
+}
+h2 { /* Header 2 */
+    font-size: 16px;
+}
+h3 { /* Header 3 */
+  font-size: 14px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
+
+---
+
+# 1 Aim
+
+This document demonstrates a simulation study that focuses on survival analysis. The goal is to find how treatment usage would affect the survival probability at the middle of the follow-up. 
+
+# 2 Set up
+
+## 2.1 Notation
+
+This study would simulate 100 participants for 50 time intervals and then replicate for 1000 times. The longitudinanl setting is illustrated as below: 
+
+Let's assume that one predictor that can explain the survival time, denoted as P and treatment usage, deonted as T. Note that T is a time-varying variable which means the status will be changeable at different time points while P is time-invariant. At each time point, the occurance of death as well as treatment follows a exponential distribuiton: 
+
+$$\begin{aligned}
+E(Y) = exp(a0 + a1*P + a2*T)
+\end{aligned}$$
+
+$$\begin{aligned}
+E(T) = exp(b0 + b1*P)
+\end{aligned}$$
+
+To implement the simulation study more easily, we will fix a0, a1, b0 and b1 and vary a2. $a0 = -6; a1 = 1; b0 = -5; b1 = 1$. There will be three treatments available. Therefore, there will be three scenarios: $a2 = -0.5/-1/-1.5$. Also assume that P follows a uniform distribution: $P \sim Unif(0,1)$.
+
+## 2.2 Set seeds
+Here, we will generate seeds for 1000 replicates, which will later on be recorded in the output 
+```{r}
+set.seed(3242)
+```
+
+## 2.3 Library
+```{r}
+library(rms)
+library(pec)
+library(survival)
+library(tidyverse)
+library(kableExtra)
+```
+
+
+## 2.4 Function of generating the data
+Here is the function of generating the data
+```{r}
+make.NA <- function(x) {	 
+	x[cumsum(cumsum(x))>1] <- NA
+	return(x)}
+
+
+generate <- function(n, time, a0, a1, a2, b0, b1, seeds) {
+  # set seeds
+  set.seed(seeds)
+  # make a matrix
+  Y <- matrix(nrow = n, ncol = time)
+  treat <- matrix(nrow = n, ncol = time)
+  
+  # generate the predictors
+  P <- runif(n)
+  #lambda0 <- exp(a0 + a1*P)/(1+exp(a0 + a1*P)) # hazard without treatment
+  #lambda1 <- exp(a0 + a1*P+ a2)/(1+exp(a0 + a1*P + a2)) # hazard with treatment
+  lambda0 <- exp(a0 + a1*P) # hazard without treatment
+  lambda1 <- exp(a0 + a1*P+ a2) # hazard with treatment
+  
+  # first time point
+  #pT <- exp(b0 + b1*P)/(1+exp(b0 + b1*P))
+  pT <- exp(b0 + b1*P)
+  treat[,1]		<- rbinom(n,1,pT)
+  pY		<- lambda1*treat[,1] + lambda0*(1-treat[,1])
+  Y[,1] 	<- rbinom(n,1,pY)
+  
+  # for time intervals 2 through T:
+  for (i in 2:time){
+	  treat.t		<- rbinom(n,1,pT)
+	  treat[,i]		<- apply(cbind(treat.t, treat[,(i-1)]),1,max)
+	  pY		<- lambda1*treat[,i] + lambda0*(1-treat[,i])
+	  Y[,i] 	<- rbinom(n,1,pY)
+  }
+  
+  ID 	<- rep(1:n,each=time)
+  pred 	<- rep(P,each=time)
+  time_point 	<- rep(1:time,n)
+  Y.vect 	<- as.vector(apply(Y,1,make.NA))
+  treat.vect 	<- as.vector(t(treat))
+  start 	<- time_point-1
+  stop 		<- time_point
+  
+  data <- data.frame(ID=ID, 
+			  pred=pred,
+			  treatment=treat.vect,
+			  status=Y.vect,
+			  start=start,
+			  stop=stop)
+
+# and exclude information after first event:
+  dat <- subset(data,subset=is.na(status)==0)
+
+# return a list
+  return (dat)
+}
+```
+
+# 3 Simulation
+
+```{r}
+n.sim <- 1000 
+n.sce <- 3
+
+n 	<- 100	# no. subjects
+time 	<- 50	# no. time intervals
+t.pred <- 25	# time point for prediction 
+
+
+b0 <- rep(-5, 3)
+b1 	<- rep(1, 3)
+a0 	<- rep(-4.8, 3)
+a1 	<- rep(1, 3)
+a2 	<- seq(-10,-0.5,length.out = 3)
+
+seeds <- matrix(sample(1:10^8, n.sim*n.sce, replace = F), ncol = n.sce, nrow=n.sim)
+output <- matrix(ncol=n.sce, nrow=n.sim)
+colnames(output) <- c("treatment1: a2=-1.5", "treatment2: a2=-1", "treatment3: a2=-0.5")
+
+for (i in 1:n.sce) {
+  for (j in 1:n.sim) {
+    data <- generate(n, time, a0[i], a1[i], a2[i], b0[i], b1[i], seeds[j,i])
+    survival <- cph(Surv(start, stop, status) ~ pred, data=data, x = TRUE, y = TRUE, surv = TRUE)
+    output[j,i] <- predictSurvProb(survival, newdata = data, times = t.pred)[1]
+  }
+}
+
+```
+
+# 4 Results
+
+Then summary of the output includes the estimates (mean of the replicates), Monte Carlo standard error (standard deviation of replicates), 2.5% of the distribution of the estimates and 97.5% of the distribution.
+```{r}
+output.sum <- data.frame(situation = colnames(output)) %>% 
+  mutate(estimate = colMeans(output)) %>% 
+  mutate(Monte_carlo_se = apply(output, 2, sd)) %>% 
+  mutate(lower_bound_se = apply(output, 2, function(x) {quantile(x,probs = 0.025)})) %>% 
+  mutate(upper_bound_se = apply(output, 2, function(x) {quantile(x,probs = 0.975)}))
+
+kable(output.sum, "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed","bordered"),
+                full_width = F, row_label_position = "c")
+```
+
+Apprently, with a more effective treatment (i.e., lower a2), the survival probability increases but the magnitude of the increase is not much (i.e., less than 1%). Therefore, the treatment usage will not influence the result in prediciton models dramatically.
+
