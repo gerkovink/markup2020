@@ -1,0 +1,54 @@
+---
+title: "Monte Carlo Simulation"
+author: "Tabea Röber"
+date: "9/28/2020"
+output: html_document
+---
+
+
+```{r warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(knitr)
+
+set.seed(50)
+
+# draw 100 samples each of size 500
+samples <- map(1:100, function(x) rnorm(500)) 
+
+# function to extract mean, abs. bias, confidence interval
+info <- function(x){
+  mean <- mean(x)
+  stderror <- sd(x) / sqrt(length(x))
+  lowerbound <- mean - qnorm(0.975) * stderror
+  upperbound <- mean + qnorm(0.975) * stderror
+  
+  return(data.frame(mean=mean, bias=abs(mean), std.error=stderror, lower.bound = lowerbound, upper.bound=upperbound))
+}
+
+# create data frame with results of each sample
+results <- samples %>% map_dfr(., info)
+
+# does the interval incluse zero (the population mean)?
+results$includes.zero <- (results$lower.bound < 0 & results$up > 0)
+results$id <- row.names(results) # store sample id
+
+# take a look at data 
+results %>% head()
+
+# visualisation
+results %>% 
+  ggplot(aes(x = id, y=mean, colour=includes.zero)) + 
+  geom_point(size=0.5) + 
+  geom_errorbar(aes(ymin=lower.bound, ymax=upper.bound)) + 
+  theme_minimal() + 
+  labs(x="sample", y="mean and confidence interval") + 
+  theme(axis.text.x = element_text(angle = 90))
+
+
+# table for all samples not containing population mean (zero)
+results %>% 
+  filter(!includes.zero) %>%
+  kable(digits=3)
+```
+
