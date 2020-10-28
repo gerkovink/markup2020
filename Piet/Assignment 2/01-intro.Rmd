@@ -1,0 +1,59 @@
+# Introduction {#intro}
+
+## Background
+
+Students at both selective and nonselective institutions frequently engage in academic procrastination regardless of their gender, race, or learning style. Studies indicate that fear of failure, aversiveness of the task, and fear of social disapproval by peers are primary motives for academic procrastination. \cite{einstein} found that academic and non-academic tasks should be challenging, yet fun, to heighten the likelihood that they are completed by students.
+
+This document will aim to challenge the author in a fun way, as suggested by \cite{einstein}. Three methods  of which two use a [RNG](#rng) will be deployed to automatically create a cleaning schedule for a six person household with three cleaning tasks. This creates a challenge that is fun and a solution to a relevant problem which the author faces.
+
+Since we've established that procrastination is bad, we can postulate that it is desirable to minimize the amount of effort that needs to be undertaken in order to fulfill tasks, such as household chores. In student housing, cleaning schedules are often used as tool to plan divide tasks. However, student housing is a high throughput system where residents often move to other places and new roommates take their place. This immediatly causes the schedule to be outdated. Furthermore, the schedule can be outdated. Both factors cause the schedule to be outdated as we can see in Figure 1.
+
+\begin{tikzpicture}[scale=1]
+
+  % title
+  \node [align=center] at (5,    2.75)   {\large Figure 1};
+  
+  % subtitle
+  \node [align=center] at (2,    -1)     {\footnotesize \text{Timeline scheduling process}};
+  
+  % time points
+  \node [align=center] at (1,    1.85)   {Schedule\\creation};
+  \node [align=center] at (5,    1.85)   {Event causing\\necessary update};
+  \node [align=center] at (8.25, 1.85)   {New schedule\\creation};
+  
+  % mathematical notation of time points
+  \node [align=center] at (1,    -0.25)  {$a$};
+  \node [align=center] at (5,    -0.25)  {$b$};
+  \node [align=center] at (8.25, -0.25)  {$c$};
+  
+  % mathematical notation of time spans
+  \node [align=center] at (3,      0.6)    {$\Delta t_{event}$};
+  \node [align=center] at (6.5,    0.6)    {$\Delta t_{update}$};
+  
+  % arrows 
+  \draw [thick,->]        (1,    1.4) -- (1,    0.15);
+  \draw [thick,->]        (5,    1.4) -- (5,    0.15);
+  \draw [thick,->]        (8.25, 1.4) -- (8.25, 0.15);  
+  \draw [thick,->]        (0,    0)   -- (9,    0);
+  
+  % braces
+  \draw [thick,decorate,decoration={brace,amplitude=6pt,raise=0pt}] 
+                          (1.25, 0.15) -- (4.75, 0.15);
+  \draw [thick,decorate,decoration={brace,amplitude=6pt,raise=0pt}] 
+                          (5.25, 0.15) -- (8,    0.15);
+                          
+\end{tikzpicture}
+
+A new schedule will take effort to make, causing an increase of $\Delta t_{update}$. To minimalize $\Delta t_{update}$, it is useful to automate process $b$ as much as possible. In order to achieve this goal an approach to automate this process will be presented. This way we follow the guidelines by \cite{einstein} in the sense that it makes this assignment challenging, fun, but also useful. 
+
+It should have the following structure:
+
+Date       |  Chore 1         | Chore 2          | Chore 3
+---------- | ---------------- | ---------------- | ----------------
+Date 1     |  Name roommate   | Name roommate    | Name roommate 
+Date 2     |  Name roommate   | Name roommate    | Name roommate 
+
+
+
+
+
