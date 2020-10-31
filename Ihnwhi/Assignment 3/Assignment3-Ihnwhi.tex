@@ -1,0 +1,101 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+
+\title{Example Document to Recreate with \texttt{beamer} in \LaTeX}
+\subtitle{Week \textbf{3} \textit{Exercise}}
+
+\author{\href{https://ihnwhiheo.github.io/}{Ihnwhi Heo} \\ \texttt{\href{mailto:i.heo@uu.nl}{i.heo@uu.nl}} \\}
+
+\date{Fall 2020 \\ Markup Languages and Reproducible Programming in Statistics}
+
+\institute{
+  Department of Methodology and Statistics\\
+  Faculty of Social and Behavioural Sciences\\
+  Utrecht University, The Netherlands\\[1ex]
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Outline}
+
+\tableofcontents
+
+\end{frame}
+
+\section{Working with equations}
+
+\begin{frame}{Working with equations}
+We define a set of equations as
+\begin{equation}
+a = b + c^2,
+\end{equation}
+\begin{equation}
+a-c^2 = b,
+\end{equation}
+\begin{equation}
+\text{left side} = \text{right side},
+\end{equation}
+\begin{equation}
+\text{left side} + \text{something} \geq \text{right side},
+\end{equation}
+for all something $>$ 0.
+\end{frame}
+
+\subsection{Aligning the same equations}
+
+\subsection{Aligning the same equations}
+\begin{frame}
+\frametitle{Aligning the same equations}
+Aligning the equations by the equal sign gives a much better view into the placements of the separate equation components. 
+\begin{align}
+a&=b+c^2,\\
+a-c^2&=b,\\
+\text{left side} &= \text{right side},\\
+\text{left side} + \text{something} &\geq \text{right side},
+\end{align}
+\end{frame}
+
+\subsection{Omit equation numbering}
+
+\begin{frame}{Omit equation numbering}
+Alternatively, the equation numbering can be omitted.
+\begin{align*}
+a&=b+c^2\\
+a-c^2&=b\\
+\text{left side} &= \text{right side}\\
+\text{left side} + \text{something} &\geq \text{right side}
+\end{align*}
+\end{frame}
+
+\subsection{Ugly alignment}
+
+\begin{frame}{Ugly alignment}
+Some components do not look well, when aligned. Especially equations with different heights and spacing. For example,
+\begin{align}
+E &= mc^2,\\
+m &= \frac{E}{c^2},\\
+c &= \sqrt{ \frac{E}{m} }.
+\end{align}
+Take that into account.
+\end{frame}
+
+\section{Discussion}
+
+\begin{frame}{Discussion}
+
+So far, we have discussed the benefits of Bayesian inference in performing statistical modeling. From now on, let's discuss the following points:
+
+\begin{itemize}
+
+\item Advantages and disadvantages of the Bayesian approach compared to the frequentist approach
+\item Bayesian hypothesis testing with BF and PMP
+\item Setting prior distributions sensibly as well as wisely
+\item Practice Bayesian statistics with JASP (Jeffrey's Amazing Statistics Program)
+
+\end{itemize}
+
+\end{frame}
+
+\end{document}
