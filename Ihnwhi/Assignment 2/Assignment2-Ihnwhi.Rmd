@@ -1,0 +1,80 @@
+---
+title: "Markup Languages and Reproducible Programming in Statistics"
+subtitle: Week 2 Exercise
+author:
+    - "[Ihnwhi Heo](https://ihnwhiheo.github.io/)"
+    - Department of Methodology and Statistics, Utrecht University
+date: 'Last modified: `r Sys.setlocale("LC_TIME", "English"); format(Sys.time(), "%d
+  %B %Y")`'
+output:
+  html_document:
+    keep_md: true
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Does something that requires RNG
+
+Imagine Ihnwhi wants to travel to the United States. Since he is open to all states, he decides to let R give him suggestions concerning where to go. To that end, Ihnwhi lets R to name five states.
+
+```{r}
+# Let R name random five states in the USA.
+sample(state.name, 5)
+```
+## 2. Fixes the RNG seed
+
+However, Ihnwhi finds out that R is a bit capricious (i.e., grillig in Nederlands). Therefore, he decides to give R a seed value not to let it be capricious.
+
+If you can guess the meaning of the seed value below, contact [`Ihnwhi`](mailto:ihnwhi.heo@gmail.com)! He will send you a present.` I am quite sure nobody will see this statement, though!
+
+```{r}
+# Set a seed value for reproducibility
+set.seed(322)
+
+# Let R name random five states in the USA.
+sample(state.name, 5)
+```
+
+All right, Out of the five suggestions, Ihnwhi determines to travel to California since he loves the beach!
+
+## 3. Replicates the results
+
+Ihnwhi, a curious guy, changes his mind. He decides to make a data frame that contains R's suggestions by iterating 100 times.
+
+```{r}
+# Set a seed value for reproducibility
+set.seed(322)
+
+# Create a function that lets R suggest five US states
+suggest.ihnwhi.usa.states <- function(N) {
+  recommendation <- sample(state.name, N)
+  return(recommendation)}
+
+# Create an empty matrix to store R's suggestions
+recom.matrix <- matrix(NA, nrow=100, ncol=5)
+
+# Iterate R's suggestion algorithm by 100 times
+recom.initial <- replicate(100, suggest.ihnwhi.usa.states(5), simplify = FALSE)
+for (i in 1:100) {
+  recom.matrix[i,] <- recom.initial[[i]]
+}
+
+# The first six rows of the matrix of R's recommendations
+head(recom.matrix)
+```
+
+## 4. Communicates the info of your session
+
+If you want to communicate with me sincerely, do not see the output below but contact [`Ihnwhi`](mailto:ihnwhi.heo@gmail.com)! He is waiting for your suggestions!
+
+```{r}
+# Print the session information
+sessionInfo()
+```
+
