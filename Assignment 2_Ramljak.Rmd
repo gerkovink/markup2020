@@ -134,7 +134,7 @@ round(-0.4468931 * sd(pop$y) * sqrt((100000 - 10000) / 10000), 2)
 
 As one can see the results align and showcase a different view on how to possibly use NPS in Official Statistics. Now I only need to find the holy grail of developing an approach to estimate $\rho_{R,g}$ in an unbiased and efficient way... wish me luck!
 
-The replication can be found here.
+The replication can be found [here](https://github.com/R-ramljak/markup2020/blob/master/Replication%20of%20assignment%202.r).
 
 ```{r}
 sessionInfo()
