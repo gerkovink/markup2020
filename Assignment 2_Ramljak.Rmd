@@ -1,0 +1,141 @@
+---
+title: "Assignment 2 - Getting aquainted with the data quality concept by Meng"
+author: "Marco Ramljak"
+output:  
+  html_document:
+    code_download: true
+    theme: lumen 
+    toc: true  
+    toc_float: true
+    number_sections: true
+---
+
+# Introduction
+
+In 2016, Meng (2016) laid out a mathematical foundation for conducting unbiased inference of a target variable $g(x)$ by means of a non-probability sample. In his work he defines that the difference between any non-probability sample mean $\hat{\mu}_{g }$ and the true mean $\mu_{g}$ is defined by the product of the three terms, the data quality $\rho_{R,g}$, the problem difficulty $\sigma_{g}$ and the data quantity $\sqrt\frac{N-n}{n}$:
+
+$$
+\hat{\mu}_{g } - \mu_{g} = \rho_{R,g} \times \sigma_{g} \times \sqrt\frac{N-n}{n}.
+$$
+
+Each of the terms will be further explained in the sections below. By means of simulating a population and sampling from it with different strategies - Simple Random Sampling (SRS) and Non-probability sampling (NPS) - I want to showcase and evaluate this formula shorty.
+
+As a first step necessary packages need to be loaded and a seed for reproducibility needs to be set.
+
+```{r message=FALSE}
+library(tidyverse)
+library(Hmisc)
+
+set.seed(3)
+```
+
+# Generation of population
+
+The population I will simulate will have 100000 units and the continuous target variable $g(x)$ - in the following $Y$ - is normally distributed with a mean of 40 and a standard deviation of 10. For any generic SRS every unit will have the same response probability. In order to introduce bias for the later on NPS, I will create an auxiliary dummy variable that splits the population into two groups based on their target variable rank: one group will contain the lowest 20% of the population and the other group will contain the remaining 80%. This will lead to the fact that units with a lower value for $Y$ will be oversampled. Based on this grouping I will compute adjusted response probabilities that I can use for the `sample()` function later on.
+
+```{r}
+pop <- tibble(ID = paste0("A", 1:100000), 
+              y = rnorm(100000, mean = 40, 10)) %>% 
+  mutate(gen.inclusion.prob = 1 / (length(ID))) %>% 
+  arrange(y) %>% 
+  mutate(rank = percent_rank(y)) %>% 
+  mutate(prob.help = case_when(between(percent_rank(y), 0, 0.2) ~ 1, #| # min(y) < y < 1
+                                 # between(percent_rank(y), 0.9, 1) ~ 1, # 10 < y < max(y)
+                               TRUE ~ 0)) %>% 
+  mutate(adj.inclusion.prob = case_when(prob.help == 1 ~ 1 / sum(prob.help),
+                                        prob.help == 0 ~ 1 / sum(length(ID) - prob.help)))
+
+head(pop)
+```
+
+# Sampling SRS
+
+The first samples we will generate a SRS samples without replacement. I will generate 100 samples of size 1000 each, put them in a list, label them, create a variable called `selected` with the constant value of 1 for all sampled observations and then `right_join()` them back again to the population. It is important to notice that all units have the same probability to be sampled (response probabilities). The non-selected units in the population will receive the constant value 0 for the variable `selected`. This way, I can later on calculate *weighted statistics* such as the weighted mean or the weighted standard deviation by using the `selected` variable as the weights.
+
+```{r}
+# 100 SRS without replacement
+n.SRS <- map(1:100, ~sample(pop$ID, 1000, replace = T)) %>%
+  set_names(paste("Sample", 1:100)) %>% 
+  map(as_tibble) %>% 
+  map(~select(., ID = value)) %>% 
+  map(~mutate(., selected = 1)) %>% 
+  map(~right_join(., pop, by = "ID")) %>% 
+  map(~mutate(., selected = case_when(is.na(selected) ~ 0,
+                                      TRUE ~ selected)))
+```
+
+## Sampling Non-probability sampling
+
+Now I will generate 100 NPS samples without replacement of the size 10.000, meaning they each represent 10% of the population. The workflow for generating these samples is the same as for the SRS samples, however, I will sample the units with the `adj.inclusion.probs` variable to purposefully oversample units with lower value for the target variable $Y$.
+
+```{r}
+# 100 Non probability samples without replacement
+n.NP <- map(1:100, ~sample(pop$ID, 10000, replace = T, prob = pop$adj.inclusion.prob)) %>%
+  set_names(paste("Sample", 1:100)) %>% 
+  map(as_tibble) %>% 
+  map(~select(., ID = value)) %>% 
+  map(~mutate(., selected = 1)) %>% 
+  map(~right_join(., pop, by = "ID")) %>% 
+  map(~mutate(., selected = case_when(is.na(selected) ~ 0,
+                                      TRUE ~ selected)))
+```
+
+# Evaluation
+
+Reiterating the equation from the introduction, three terms are of interest. The first one, the data quality is expressed as the correlation between the response probability and the target variable. I.e. value expresses the selection bias a sample entails. For SRS the expected value of this term is 0 and the variance of it is tiny. For NPS this is not the case and in order to adjust for the selection bias one needs to estimate this value *(side note: this is my research goal for my thesis).* The second term, the problem difficulty is expressed as the true standard deviation of the target variable (fixed value). In practice, this value also needs to be estimated. The third term, the data quantity can expressed as the square root of the proportion of the sample in terms of the population. When sampling all units this term becomes logically 0 - which also means that the sample mean equals the true mean.
+
+In order to showcase this equation I will compute 3 statistics - the mean of the target variable, the standard deviation of the target variable, and the correlation between the `selected` variable and the target variable. Remember, for easier handling of these statistics I will do the calculations with the whole population, however, indicating through the `selected` variable if the units were sampled or not. Therefore I will use the weighted version for the mean and the standard deviation. We then end up with these three statistics for every sample. I will take the mean of every statistic for the final result.
+
+I will do this for the SRS and the NPS and later on evaluate and compare the results.
+
+```{r}
+rho.SRS2 <- n.SRS %>% 
+  map_df(~summarise(., target.mean = weighted.mean(y, w = selected), 
+                    target.sd = sqrt(wtd.var(y, weights = selected)),
+                    rho = cor(selected, y))) %>% 
+  summarise(SRS.mean.Y = mean(target.mean), 
+            SRS.sd.Y = mean(target.sd),
+            SRS.rho = mean(rho), 
+            SRS.var.rho = var(rho))
+
+rho.NP2 <- n.NP %>% 
+  map_df(~summarise(., target.mean = weighted.mean(y, w = selected), 
+                    target.sd = sqrt(wtd.var(y, weights = selected)),
+                    rho = cor(selected, y))) %>%  
+  summarise(NPS.mean.Y = mean(target.mean), 
+            NPS.sd.Y = mean(target.sd),
+            NPS.rho = mean(rho), 
+            NPS.var.rho = var(rho))
+
+rho.SRS2
+rho.NP2
+
+```
+
+As established before the true mean and the true standard deviation are 40 and 10 respectively. The SRS performs as expected, meaning there is barely bias in the estimation of the mean and the standard deviation. Furthermore, the value for `SRS.rho` indicates that there is no selection bias in the sample and this value is extremely stable over all the SRS samples, leading to a tiny value for the variance, `SRS.var.rho.`
+
+When analyzing the results for the NPS samples one can see extreme differences: the sample mean is underestimating the true value by almost 15 points and the standard deviation is much smaller as the units that are observed are more homogenous (lower values) in comparison to the population distribution. The reason for this is estimated through $\rho_{R,g}$: The deviation from 0 and the sign indicate the size and the direction of the selection bias. The variance of this value is again very small.
+
+I will input now these values into the equation from above now:
+
+```{r}
+# SRS mean deviation from true mean
+round(40.06268 - mean(pop$y), 2)
+# filling the results into the formula
+round(0.0005904353 * 10 * sqrt((100000 - 1000) / 1000), 2)
+```
+
+```{r}
+#NPS mean deviation from true mean
+round(25.93186 - mean(pop$y), 2)
+# filling the results into the formula
+round(-0.4468931 * sd(pop$y) * sqrt((100000 - 10000) / 10000), 2)
+```
+
+As one can see the results align and showcase a different view on how to possibly use NPS in Official Statistics. Now I only need to find the holy grail of developing an approach to estimate $\rho_{R,g}$ in an unbiased and efficient way... wish me luck!
+
+The replication can be found here.
+
+```{r}
+sessionInfo()
+```
