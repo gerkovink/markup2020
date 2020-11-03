@@ -1,0 +1,102 @@
+\documentclass[aspectratio43]{beamer}
+
+\usetheme{default}
+\usecolortheme{beaver}
+
+%\beamertemplatenavigationsymbolsempty
+
+\usepackage{tikz}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{First \texttt{beamer} presentation in \LaTeX}
+
+\author[Zhenwei Yang]{Zhenwei Yang \\ 6673708}
+
+\date
+{\vspace{.6 in} \\ \small{28-10-2020 \\ Department of Method and Statistics \\ Utrecht University}
+	\vskip6mm}
+
+\begin{document}
+% title page
+\titlepage 
+
+% outline page
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents	
+\end{frame}
+
+% equation page with alignment
+\section{Working with equation}
+\begin{frame}
+\frametitle{Working with equations}
+	We define a set of equations as
+	\begin{gather}
+	%\begin{align}
+		a = b + c^2 \\
+		a - c^2 = b	\\
+		\text{left side} = \text{right side} \\
+		\text{left side} + \text{something} \geq \text{right side}
+	%\end{align}	
+	\end{gather}
+	for all $\mathsf{something}> 0$.
+
+\end{frame}
+
+% Aligning 
+\subsection{Aligning the same equation}
+\begin{frame}
+\frametitle{Aligning the same equations}
+	Aligning the equations by the equal sign gives a much better view into placement of the separate equation components.
+	\begin{align}
+		a &= b + c^2 \\
+		a - c^2 &= b	\\
+		\text{left side} &= \text{right side} \\
+		\text{left side} + \text{something} &\geq \text{right side}
+	\end{align}
+
+\end{frame}
+
+\subsection{Omit equation numbering}
+\begin{frame}
+\frametitle{Omit equation numbering}
+	Alternatively, the equation numbering can be omitted.
+	\begin{align*}
+	a &= b + c^2 \\
+	a - c^2 &= b \\
+	\text{left side} &= \text{right side} \\
+	\text{left side + something} &\geq	\text{right side}
+	\end{align*}
+\end{frame}
+
+\subsection{Ugly alignment}
+\begin{frame}
+\frametitle{Ugly alignment}
+	Some components do not look well, when aligned. Especially equations with different heights and spacing. For example,
+	\begin{align}
+	E &=  mc^2 \\
+	m &= \frac{m}{c^2} \\
+	c &= \sqrt{\frac{E}{m}}	
+	\end{align}
+	Take that into account
+\end{frame}
+
+\section{Discussion}
+\begin{frame}
+\frametitle{Discussion}
+	This is where you'd normally give your audience a recap of you talk, where you could discuss e.g. the following
+
+	\begin{itemize}
+		\item Your main findings
+		\item The consequences of your main findings
+		\item Things to do
+		\item Any other business not currently investigated, but related to your talk
+	\end{itemize}	
+\end{frame}
+
+
+
+\end{document}
