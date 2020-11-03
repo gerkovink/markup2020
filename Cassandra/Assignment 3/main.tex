@@ -1,0 +1,135 @@
+\documentclass[aspectratio=169]{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{beaver} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\title[Your Short Title]{Example document to recreate with \texttt{beamer} in \LaTeX{}}
+\author{Cassandra Bunschoten}
+\vskip 10 cm
+\date{FALL 2019 \\
+Markup Languages and Reproducible Programming in Statistics}
+
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Outline
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+%first section, equations
+\section{Working with equations}
+
+%slide equations
+\begin{frame}{Working with equations}
+
+\vskip 1cm
+\
+We define a set of equations as
+\begin{equation}
+a = b + c^2,
+\end{equation}
+\begin{equation}
+a - c^2 = b,
+\end{equation}
+\begin{equation}
+    \text{left side $-$ right side,}
+\end{equation}
+\begin{equation}
+    \text{left side + something $\geq$ right side},
+\end{equation}
+\
+for all something > 0.
+
+\vskip 2cm
+
+\end{frame}
+
+%slide aligning equations
+\subsection{Aligning the same equations}
+
+%slide equations
+\begin{frame}{Aligning the same equations}
+
+\vskip 1cm
+Aligning the equations by the equal sign gives a much better view into the placements of the separate equation components.
+
+\begin{eqnarray}
+a &=& b + c^2 \\
+a - c^2 &=& b \\
+\text{left side} &-& \text{right side} \\
+\text{left side + something} &\geq& \text{right side}
+\end{eqnarray}
+
+\vskip 2cm
+
+\end{frame}
+
+
+\subsection{Omit equation numbering}
+
+\begin{frame}{Omit equation numbering}
+
+Alternatively, the equation numbering can be omitted.
+\begin{eqnarray*}
+a &=& b + c^2 \\
+a - c^2 &=& b \\
+\text{left side} &-& \text{right side} \\
+\text{left side + something} &\geq& \text{right side}
+\end{eqnarray*}
+
+\end{frame}
+
+\subsection{Ugly alignment}
+
+\begin{frame}{Ugly alignment}
+
+Some components do not look well, when aligned. Especially equations with different heights and spacing. For example,
+
+\begin{eqnarray}
+E &=& mc^2, \\
+m &=& \frac{E}{c^2}, \\
+c &=& \sqrt{\dfrac{E}{m}}.
+\end{eqnarray}
+
+Take that into account.
+
+\end{frame}
+
+
+\section{Discussion}
+\begin{frame}{Discussion}
+
+This is where you'd normally give your audience a recap of your talk, where you could discuss e.g. the following
+
+\begin{itemize}
+    \item Your main findings
+    \item The consequences of your main findings
+    \item Things to do
+    \item Any other business not currently investigated, but related to your talk
+\end{itemize}
+    
+\end{frame}
+
+
+\end{document}
