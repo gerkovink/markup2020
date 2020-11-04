@@ -1,0 +1,232 @@
+---
+title: "A Study in Replication"
+subtitle: "Creative Coding in R"
+author: "Thomas Wise; 6664202"
+output: pdf_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Introduction 
+
+## Aim: 
+
+In this document, we will explore the creative implications of using replication, in order to generate reproducible aRt-work. This will intergrate components which performs and conducts statistical analysis in order to contribute to the artist design. In this study of replication, it will directly build upon both the creative and core simulating factors discussed in the previous document *Art in Many Forms*. 
+
+## Package Loading:
+
+The same packages from the previous document will be loaded, these include both *core* packages which I typically use for any project, and additional packages which are useful for this document. 
+
+```{r, include = FALSE, eval = FALSE}
+  ## Run if Required 
+
+  ## Standard Package Install 
+  install.packages("tidyverse")
+  install.packages("RColorBrewer")
+  install.packages("Rcpp")
+  
+  ## Extra Helpful Packages 
+  install.packages("kableExtra")
+  install.packages("rmarkdown")
+  install.packages("psych")
+  install.packages("DescTools")
+```
+
+```{r, warning = FALSE, message = FALSE}
+## Core Packages 
+  library(tidyverse)      ## In particular ggplot2
+  library(RColorBrewer)   ## For colour experimentation
+  library(Rcpp)           ## For CPP intergration
+  
+  
+## Additional Packages
+  # Those used within publication of this pdf
+  library(kableExtra)
+  library(rmarkdown)
+  library(psych)
+  library(DescTools)
+```
+
+## Fixing the Random Seed 
+
+```{r}
+set.seed(300920)
+```
+
+# Setup 
+
+For this study in Replication, we will be conducting statistical tests upon several different types of simulated distributions, in order to be able to compare their visual and statistical differences. And therefore, how this statistical knowledge can be applied to create interesting artist designs. 
+
+## Distribution Definitions 
+
+For this investigation we will use several classical distributions, which can be compared in both polar and cartesian space. 
+
+### Normal Distribution 
+
+A normal distribution is achieved using the noted, equation \ref{eqn:normdis}, this indicates that to construct a normal distribution both the *mean* ($\mu$) and *standard deviation* ($\sigma^{2}$) are required. For this example, let us deviate from the traditional default and use the parameters defined in equation \ref{eqn:normdiscompl}. 
+
+\begin{equation}
+\label{eqn:normdis}
+X \sim \mathcal{N}(\mu, \, \sigma^{2})
+\end{equation}
+\begin{equation}
+\label{eqn:normdiscompl}
+X \sim \mathcal{N}(10, 2)
+\end{equation}
+
+From this, we can generate a data set of 1000 data points, using the function *rnorm* (stats). 
+
+```{r}
+## Set General Population Count (this will remain Constant)
+  pop.n <- 1000
+
+## Normal Distribution Parameters 
+  mu.nd <- 10
+  sd.nd <- 2
+  
+## Simulate the Distribution (this is saved as an array)
+  nd.sim <- rnorm(n = pop.n, mean = mu.nd, sd = sd.nd)
+
+```
+
+### Gamma Distribution 
+
+Next, we will discuss the Gamma Distribution (Equation \ref{eqn:gammadis}). This although more common in fields such as econometric and life sciences than social sciences (as the case for normal distributions). This distribution is defined through its parameters *shape* ($\alpha = k$), and *rate* ($\beta = 1/\theta$). For this, let us use the values defined in equation \ref{eqn:gammadiscompl}.
+
+\begin{equation}
+\label{eqn:gammadis}
+X \sim \Gamma(\alpha, \, \beta)
+\end{equation}
+\begin{equation}
+\label{eqn:gammadiscompl}
+X \sim \Gamma(2, \, 2)
+\end{equation}
+
+As a result the following code can be generated. 
+
+```{r}
+## Gamma Distribution Parameters 
+  alpha.gd <- 2
+  beta.gd <- 2
+  
+## Simulate the Distribution (this is saved as an array)
+  gd.sim <- rgamma(n = pop.n, shape = alpha.gd, rate = beta.gd)
+```
+
+### Poisson Distribution 
+
+Next, we will explore the Poisson distribution, this classical can form a distribution similar to that of a normal distribution, however it is precisely for this reason it is important to explore how the values randomly generated through this function differs from that of the normal distribution and therefore how differs artistically. This distribution is displayed using the notation in Equation \ref{eqn:poisdis}, wherein the parameter $\lambda$ is equal to both the expected value of $X$ and its Variance. For our example, we will use the value wherein $\lambda = 5$, as seen in equation \ref{eqn:poisdiscompl}.
+
+\begin{equation}
+\label{eqn:poisdis}
+X \sim Pois(\lambda)
+\end{equation}
+\begin{equation}
+\label{eqn:poisdiscompl}
+X \sim Pois(5)
+\end{equation}
+
+```{r}
+## Poisson Distribution Parameters 
+  lamd.pd <- 5
+  
+## Simulate the Distribution (this is saved as an array)
+  pd.sim <- rpois(n = pop.n, lambda = lamd.pd)
+```
+
+### Binomial Distribution 
+
+The final distribution to examine is the binomial distribution, [DEFINE]
+
+\begin{equation}
+\label{eqn:binomdis}
+X \sim \mathcal{B}(n, p)
+\end{equation}
+\begin{equation}
+\label{eqn:binomdiscompl}
+X \sim \mathcal{B}(n, p)
+\end{equation}
+
+```{r}
+## Binomial Distribution Parameters 
+  size.bd <- 10
+  prob.bd <- 0.5
+  
+## Simulate the Distribution (this is saved as an array)
+  bd.sim <- rbinom(n = pop.n, size = size.bd, prob.bd)
+
+```
+
+## Distribution Visualisation 
+
+Before we conduct any statistical tests upon these simulated distributions, we should visualize the distribution using the *geom_density()* function (ggplot2). To understand the differences between the distributions. 
+
+```{r}
+
+## First Convert all the arrays to Data Frames and rename column names. 
+  nd.sim <- as.data.frame(nd.sim) 
+  colnames(nd.sim) <- "nd.sim"
+  gd.sim <- as.data.frame(gd.sim)
+  colnames(gd.sim) <- "gd.sim"
+  pd.sim <- as.data.frame(pd.sim)
+  colnames(pd.sim) <- "pd.sim"
+  bd.sim <- as.data.frame(bd.sim)
+  colnames(bd.sim) <- "bd.sim"
+  
+## Plot the Density of these distributions 
+  
+  ggplot() + 
+  geom_density(data = nd.sim, mapping = aes(nd.sim), colour = "red") +     # Normal
+  geom_density(data = gd.sim, mapping = aes(gd.sim), colour = "blue") +    # Gamma 
+  geom_density(data = pd.sim, mapping = aes(pd.sim), colour = "green") +   # Poisson
+  geom_density(data = bd.sim, mapping = aes(bd.sim), colour = "purple")    # Binomial 
+
+
+```
+
+# Statistical Tests 
+
+To explore the impact of these distributions we can run several statistical tests on these different distributions and explore the differences using the artist techniques reviewed before. For this, we will calculate the standard descriptive statistics (Mean ($\mu$), Standard Deviation $\sigma^{2}$, Min, Max, Skew and Quartiles). These can then be displayed in Table 1. 
+
+```{r}
+## Prepare the data through combining all the different distributions into one data frame
+  dis.df <- cbind(nd.sim, gd.sim, pd.sim, bd.sim)
+
+## Generate an Empty Data frame for population 
+  dsp.df <- as.data.frame(matrix(data = NA, nrow = 4, ncol = 7)) 
+  colnames(dsp.df) <- c("Mean", "SD", "Min", "Max", "Skew", "Q0.025", "Q0.975")
+  rownames(dsp.df) <- c("Normal", "Gamma", "Poisson", "Binomial")
+  
+## Calculate the Descriptive Statistics for each 
+  ## Means 
+    dsp.df[,1] <- colMeans(dis.df)
+    
+  ## SD 
+    dsp.df[,2] <- apply(dis.df, 2, sd)
+    
+  ## Min
+    dsp.df[,3] <- apply(dis.df, 2, min)
+    
+  ## Max
+    dsp.df[,4] <- apply(dis.df, 2, max)
+    
+  ## Skew
+    dsp.df[,5] <- apply(dis.df, 2, Skew)
+    
+  ## Quant (lower)
+    dsp.df[,6] <- describe(dis.df, quant = c(0.05))[14]
+    
+  ## Quant (Upper)
+    dsp.df[,7] <- describe(dis.df, quant = c(0.975))[14]
+    
+## Print Table 
+    kable(dsp.df, format = "latex") %>%
+      kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+    
+    
+    
+```
+
+
+
+
