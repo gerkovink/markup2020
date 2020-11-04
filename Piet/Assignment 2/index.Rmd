@@ -1,0 +1,45 @@
+--- 
+title: "Markdown Exercise"
+subtitle: "Using a Random Number Generator to create a cleaning schedule"
+author: "Piet Jonker"
+date: "`r Sys.Date()`"
+header-includes:
+   - \usepackage{amsmath}
+   - \usepackage{tikz}
+   - \usepackage{pgfplots}
+   - \pgfplotsset{compat=1.17}
+   - \usepackage{amsfonts} 
+output:
+  word_document: default
+  pdf_document: default
+description: This is an exercise to practice markdown and reproducible code
+documentclass: book
+classoption: openany
+link-citations: yes
+bibliography:
+- book.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+urlcolor: red
+---
+
+# Notes {-}
+
+_Welcome dear reader_
+
+This document concerns an exercise in writing reproducible code and learning the markdown language in R. 
+
+## Objectives {-}
+
+Here are some notes on the objectives of this document. 
+
+1. The target audience of this document is regarded as the one and only Gerko Vink and possibily classmates
+2. This document should be reproducible and run flawless on any device
+3. There should be a glossary, consisting of three parts
+    - Abbreviations (in text, e.g. _"RNG"_)
+    - Long form (in glossary, e.g. _"Random Number Generator"_)
+    - Exhaustive definition (in glossary, e.g. _"A Random Number Generator creates random numbers"_)
+4. Easy to read and use
+5. Each function will be seperately created and stored in a folder
+6. Compatability with PDF, and if the glossary allows it also HTML
+

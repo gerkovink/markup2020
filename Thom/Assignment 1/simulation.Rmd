@@ -1,0 +1,53 @@
+---
+title: "Simulations"
+author: "Thom Volker"
+date: "9/16/2020"
+output: html_document
+---
+
+Loading `tidyverse` first, before continuing to the exercises, and set a seed for reproducibility.
+
+```{r, message = F, warning=F}
+set.seed(1)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+```{r}
+samples <- map(1:100, function(x) rnorm(1000))
+
+estimates <- function(x) {
+  mu <- mean(x)
+  se <- sqrt(sum((x - mu)^2) / (length(x)-1)) / sqrt(length(x))
+  lower <- mu + qnorm(0.025) * se
+  upper <- mu + qnorm(0.975) * se
+  
+  return(data.frame(Mean = mu, bias = abs(mu), sd = se, lower = lower, upper = upper))
+}
+
+results <- samples %>% 
+  map_dfr(function(x) estimates(x), .id = "Sample")
+
+results$Covered <- results$lower < 0 & 0 < results$upper
+```
+
+```{r, dpi=500, fig.width=7, fig.height=4}
+ggplot(results, mapping = aes(color = Covered)) +
+  geom_point(mapping = aes(x = as.numeric(Sample), y = Mean)) +
+  geom_errorbar(aes(x = as.numeric(Sample), ymin = lower, ymax = upper), width = .2) +
+  scale_color_brewer(palette = "Set1") +
+  xlab("Sample id") +
+  ylab("Mean and CI") +
+  theme_linedraw()
+```
+
+```{r}
+results %>%
+  filter(!Covered) %>%
+  knitr::kable(digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                position = "float_left",
+                full_width = FALSE)
+```
+

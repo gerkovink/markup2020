@@ -1,0 +1,118 @@
+---
+title: "<b> Markup </b>"
+subtitle: "Week 2"
+author: "Vivian Baars"
+date: "<i> 10/22/2020 </i>"
+output: 
+  html_document: 
+    theme: simplex
+    highlight: kate
+    toc: true
+    toc_float: true
+---
+
+<style type="text/css">
+
+body, td, code.r, pre {
+   font-size: 12px;
+}
+h1.title{
+  font-size: 22px;
+}
+h1{
+  font-size: 18px;
+}
+h2{
+  font-size: 16px;
+}
+h3, h4.author, h4.date{
+  font-size: 14px;
+}
+
+</style>
+
+---
+
+# Load packages
+```{r, warning=F, message=F}
+library(broom)
+library(purrr)
+library(dplyr)
+library(ggplot2)
+library(latex2exp)
+```
+
+# Fix RNG
+```{r}
+set.seed(6022)
+```
+
+# Simulate a linear model
+$$EDULVL_{i} = \beta_{0} + \beta_{1}*GNDR_{i} +\varepsilon_{i}$$, where $$\varepsilon_{i} \sim N(0,\sigma^2)$$.    
+```{r}
+simlm_fun = function(nrep = 50, b0 = 6, b1 = 0, sigma = 2) {
+     ngroup = 2
+     gender = rep(c("female", "male"), each = nrep)
+     e = rnorm(n = ngroup * nrep, mean = 0, sd = sigma)
+     education = b0 + b1 * (gender == "male") + e
+     simdat = data.frame(gender, education)
+     model = lm(education ~ gender, data = simdat)
+     return = model
+}
+
+sim = replicate(n = 100, simlm_fun(), simplify = F)
+```
+
+# Plot density
+```{r}
+sim %>%
+  map_df(tidy) %>%
+  filter(term == "gendermale") %>%
+  ggplot(aes(x = estimate)) +
+    geom_density(fill = "grey", alpha = .5) +
+    geom_vline(xintercept = 0, color = "darkgrey") +
+    theme_minimal() +
+    labs(x = TeX('$\\beta$'), y = "", title = "Simulated density of 'the effect of gender on educational level'", caption = "Note. 'True' effect is zero; number of observations is 100; number of replications is 100.")
+```
+
+# Type 1 error rate
+```{r}
+sim %>%
+  map_df(tidy) %>%
+  filter(term == "gendermale") %>%
+  pull(p.value) %>%
+  {. < 0.05} %>%
+  mean()
+```
+
+# Simulate another linear model
+```{r}
+sim2 = replicate(n = 100, simlm_fun(b1 = -0.5), simplify = F)
+```
+
+# Plot another density
+```{r}
+sim2 %>%
+  map_df(tidy) %>%
+  filter(term == "gendermale") %>%
+  ggplot(aes(x = estimate)) +
+    geom_density(fill = "grey", alpha = .5) +
+    geom_vline(xintercept = -0.5, color = "darkgrey") +
+    theme_minimal() +
+    labs(x = TeX('$\\beta$'), y = "", title = "Simulated density of 'the effect of gender on educational level'", caption = "Note. 'True' effect is -0.5; number of observations is 100; number of replications is 100.")
+```
+
+# Power analysis
+```{r}
+sim2 %>%
+  map_df(tidy) %>%
+  filter(term == "gendermale") %>%
+  pull(p.value) %>%
+  {. < 0.05} %>%
+  mean()
+```
+
+---
+```{r}
+sessionInfo()
+```
