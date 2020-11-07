@@ -136,7 +136,7 @@ X \sim Pois(5)
 
 ### Binomial Distribution 
 
-The final distribution to examine is the binomial distribution, [DEFINE]
+The final distribution to examine is the binomial distribution.
 
 \begin{equation}
 \label{eqn:binomdis}
@@ -228,5 +228,9 @@ To explore the impact of these distributions we can run several statistical test
 ```
 
 
+This as a whole will generate a reproducible output, as an .rmd & pdf file, additionally the session information can also be logged. 
 
+```{r}
+sessionInfo()
+```
 
