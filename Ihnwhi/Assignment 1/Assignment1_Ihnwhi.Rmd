@@ -1,0 +1,135 @@
+---
+title: "Markup Languages and Reproducible Programming in Statistics"
+subtitle: Week 1 Exercise
+author:
+    - "[Ihnwhi Heo](https://ihnwhiheo.github.io/)"
+    - Department of Methodology and Statistics, Utrecht University
+date: 'Last modified: `r Sys.setlocale("LC_TIME", "English"); format(Sys.time(), "%d
+  %B %Y")`'
+output:
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Preparation
+
+```{r}
+# Load the required packages
+library(ggplot2)
+library(extrafont)
+library(tidyverse)
+```
+
+## 1. Sample 100 samples from a standard normal distribution.
+
+```{r}
+# Set a seed value for reproducibility
+set.seed(322)
+
+# Sample 100 samples from a standard normal distribution
+samples <- rnorm(100)
+print(samples)
+```
+
+## 2. For each of these samples, calculate the following statistics for the mean:
+
+### (1) absolute bias
+
+```{r}
+# Calculate the absolute bias
+ab.samples <- abs(mean(samples) - 0)
+print(ab.samples)
+```
+
+### (2) standard error
+
+```{r}
+# Make a function that returns a standard error
+se.ihnwhi <- function(x) {
+  x <- na.omit(x)
+  n.x <- length(x)
+  sd.x <- sd(x)
+  se.x <- sd.x/sqrt(n.x)
+  return(se.x)
+}
+
+se.samples <- se.ihnwhi(samples)
+print(se.samples)
+```
+
+### (3) lower bound of the 95% confidence interval
+
+```{r}
+lb.samples <- mean(samples) - qnorm(.975)*se.samples
+print(lb.samples)
+```
+
+### (4) upper bound of the 95% confidence interval
+
+```{r}
+ub.samples <- mean(samples) + qnorm(.975)*se.samples
+print(ub.samples)
+```
+
+## 3. Create a plot that demonstrates the following:
+
+> “A replication of the procedure that generates a 95% confidence interval that is centered around the sample mean would cover the population value at least 95 out of 100 times” (Neyman, 1934).
+
+```{r}
+# Set a seed value for replicability
+set.seed(322)
+
+# Make a function that creates a confidence interval
+ci.ihnwhi <- function(x){
+  x <- na.omit(x)
+  mean.x <- mean(x)
+  n.x <- length(x)
+  sd.x <- sd(x)
+  se.x <- sd.x/sqrt(n.x)  
+  lb.x <- mean.x - qnorm(.975)*se.x
+  ub.x <- mean.x + qnorm(.975)*se.x
+  info <- c(lb.x, mean.x, ub.x)
+  return(info)
+}
+
+# Replicate drawing 100 random values 100 times
+sim.ci <- replicate(100, rnorm(100), simplify = FALSE)
+
+# Create an empty matrix to store the values
+matrix.ci <- matrix(NA, nrow=100, ncol=3)
+
+# Create 100 confidence intervals for replicated datasets
+for (i in 1:100) {
+  matrix.ci[i,] <- ci.ihnwhi(sim.ci[[i]])
+}
+
+# Designate column names for the confidence interval matrix
+colnames(matrix.ci) <- c("lower", "mean", "upper")
+
+# Treat matrix.ci as a data frame
+matrix.ci <- data.frame(matrix.ci)
+
+ggplot(matrix.ci, aes(x = 1:100, y = min(matrix.ci):max(matrix.ci))) + 
+  theme_bw() +
+  geom_hline(aes(yintercept=0), color = "blue", size = 1.5) +
+  geom_pointrange(aes(ymax = upper, y = mean, ymin = lower), shape=20) +
+  xlab("Repliaction 100 times") +
+  ylab("95% Confidence Intervals") +
+  ggtitle("Simulation Study for 95% Confidence Interval") +
+  theme(text=element_text(family="Candara"),
+        plot.title = element_text(size = 15, color="black", hjust=0.5, face="bold"))
+```
+
+## 4. Present a table containing all simulated samples for which the resulting confidence interval does not contain the population value.
+
+```{r}
+# Filter rows that does not contain the population values
+matrix.ci.condition <- filter(matrix.ci, lower > 0 | upper < 0)
+
+# Print the table that meets the condition
+print(matrix.ci.condition)
+```
