@@ -1,0 +1,60 @@
+---
+title: "Exercise 1"
+author: "Dandan Tang"
+date: "2020/11/20"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+1.Sample 100 samples from a standard normal distribution.
+```{r}
+set.seed(202)
+simdata <- replicate(100,rnorm(5000,0,1))
+```
+2.absoult bias
+```{r}
+Mean <- apply(simdata,2,mean)
+bias <- abs(Mean - 0)
+```
+3.standard error
+```{r}
+sdd <- apply(simdata,2,var)
+Std.Err <- sdd/sqrt(5000)
+
+```
+4.lower bound of the 95% confidence interval and upper bound of the 95% confidence interval
+```{r}
+con <- qt(.975,4999)*Std.Err
+ci_lower <- Mean - con
+ci_upper <- Mean + con
+```
+5.arrange the results
+```{r}
+result <- data.frame(Mean,bias,Std.Err,ci_lower,ci_upper,
+                     cover = as.factor(ci_lower<0 & ci_upper>0))
+
+```
+6.Create a plot that demonstrates the following:“A replication of the procedure that generates a 95% confidence interval that is centered around the sample mean would cover the population value at least 95 out of 100 times” (Neyman, 1934)
+```{r}
+library(ggplot2)
+interval <- aes(ymax=ci_upper,ymin=ci_lower)
+ggplot(result,aes(y=Mean, x=1:100, colour = cover)) + 
+  geom_hline(aes(yintercept = 0), color = "dark grey", size = 2) + 
+  geom_pointrange(interval) + 
+   xlab("Sample 1-100") +
+   ylab("Means and 95% Confidence Intervals")
+```
+7.Present a table containing all simulated samples for which the resulting confidence interval does not contain the population value.
+```{r}
+library(knitr)
+library(kableExtra)
+kable(result,format = 'html', caption = 'The results of simulated sample',
+        align = 'r',row.names = TRUE, booktabs= TRUE)
+```
+
+
