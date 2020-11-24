@@ -1,0 +1,73 @@
+---
+title: "Exercise 1.8: Monte Carlo Simulation"
+subtitle: "Markup Languages and Reproducible Programming in Statistics, week 1"
+author: "Daan de Jong"
+date: "9/16/2020"
+output: html_document
+---
+
+## 1. Perform a small simulation that does the following
+
+a. Sample 100 samples from a standard normal distribution.
+
+```{r}
+set.seed(10) #set random seed
+n <- 800 #sample size
+s <- 100 #number of samples
+samples <- matrix(data=NA, nrow=100, ncol=n) #each row becomes a sample
+
+for (i in 1:s) samples[i,] <- rnorm(n=n, mean=0, sd=1) #1000 random samples stored in the matrix
+```
+
+b. For each of these samples, calculate the following statistics for the mean:
+
+```{r}
+#empty matrix for storage of 4 sample statistics
+stats <- data.frame(absBias=numeric(s), SE=numeric(s), LB95=numeric(s), UB85=numeric(s))
+
+#function to compute the sample statistics all at once
+computeStats <- function(x) return(c(mean(x),
+                                     sqrt(var(x)/n),
+                                     mean(x)-1.96*sqrt(var(x)/n),
+                                     mean(x)+1.96*sqrt(var(x)/n)))
+
+for (i in 1:s) stats[i,] <- computeStats(samples[i,]) 
+```
+
+c. Create a plot that demonstrates the following: **“A replication of the procedure that generates a 95% confidence interval that is centered around the sample mean would cover the population value at least 95 out of 100 times” (Neyman, 1934)**
+
+```{r}
+#initialize plot: create empty plot with titles, with the right size
+plot(NULL, main="95% Confidence intervals of 100 samples from N(0,1)",
+     xlab="value of x", ylab="ith sample of n=800, i=1,...,100",
+     xlim=c(-.25, .25), ylim=c(0,501), yaxt="n") 
+
+abline(v=0) #add a line to in indicate the true mean
+
+#for each sample, add a horizontal line segment to represent the CI
+for (i in 1:s) {
+  lo <- stats[i,3] #temporarily store lower and upper values 
+  up <- stats[i,4]
+  #a CI that does not include zero is in red
+  if (lo > 0 | up < 0) col <- "red" else col <- "black"
+  segments(x0=lo, x1=up, y0=i*5, y1=i*5, col=col) 
+  points(x=stats[i,1], y=i*5, pch=18, col=col) #add sample mean 
+}
+```
+
+d. Present a table containing all simulated samples for which the resulting confidence interval does not contain the population value.
+
+```{r}
+library(knitr)
+kable(stats[stats$LB95 > 0 | stats$UB85 < 0, ])
+```
+
+
+
+
+
+
+
+
+
+

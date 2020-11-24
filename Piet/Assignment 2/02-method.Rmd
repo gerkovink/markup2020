@@ -1,0 +1,236 @@
+# Method {#method}
+
+## Deterministic versus Random Number Generator
+
+The Random Number Generator will be used to divide tasks among roommates in a pseudo-random manner. This will then be compared to a deterministic approach so that the two methods can be compared. 
+
+First the seed is set so that our results are reproducible. Also, the tidyverse is loaded since we'll need it later.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+set.seed(123)
+```
+
+### Deterministic approach {-}
+
+First a function will be created for the deterministic approach. One pattern will repeat itself for the entire sequence of dates specified. We will do this as following:
+
+```{r deterministic schedule}
+
+createSchedule <- function(startDate = Sys.Date(),         # the current date is used as default input
+                           endDate   = Sys.Date() + 305,   # 
+                           createCSV = "no",                           
+                           roommateNames
+                           ) {
+
+  # create a string of dates between startDate and endDate
+  dateString <- seq(from = startDate,
+                    to   = endDate,
+                    by   = "days")
+
+  # turn it into dataframe
+  data <- as.data.frame(dateString)
+
+  # add weekdays
+  data <- data %>%
+    mutate(days = weekdays(dateString))
+
+  # filter out fridays
+  data <- data %>%
+    filter(days == "vrijdag" | days == "friday")
+
+  # shuffle the orders of the name strings so that they can be put into dataframe
+  roommateNames2 <- roommateNames[c(5,6,1,2,3,4)]
+  roommateNames3 <- roommateNames[c(3,4,5,6,1,2)]
+
+  # add columns with chores
+  data <- data %>%
+    mutate(gang     = rep_len(roommateNames,  length.out = nrow(data)),
+           keuken   = rep_len(roommateNames2, length.out = nrow(data)),
+           badkamer = rep_len(roommateNames3, length.out = nrow(data))
+           )
+
+  # format dates
+  data <- data %>%
+    mutate(datum = format(dateString, "%d-%m-%y"))
+
+  # delete weekday and dateString column
+  data <- data %>%
+    select(datum, 
+           gang,
+           keuken, 
+           badkamer)
+  
+  if (createCSV == "yes") {
+    write.csv(data, file = "schedule.csv")
+  } else {
+      return(data)
+  }
+  
+}
+```
+
+Now, we test the function and show the first 10 rows of the schedule. To do this in a reproducible manner, we specify:
+
+-  a start date
+-  an end date
+-  the names of my roommates
+
+This will be used throughout this document. Completely by chance, the start date is my birthday and the end date Sinterklaas evening (which is my grandfathers birthday). 
+
+```{r}
+startDate     <- as.Date("1996-02-16")
+endDate       <- as.Date("1996-12-15") 
+roommateNames <- c("thijs", "jur", "wies", "hidde", "piet", "jette")
+
+kable(createSchedule(startDate     = startDate,
+                     endDate       = endDate,
+                     createCSV     = "no", 
+                     roommateNames = roommateNames)[1:10,])
+```
+
+
+
+### RNG approach 1 {-}
+
+In this version, we use the sample function to sample one name per chore per week, The sample function uses the [RNG](#rng). This approach might not be the most convenient, since it is possible for one person to have all the chores in a given week.
+
+```{r fully random schedule}
+
+createScheduleFull <- function(startDate = Sys.Date(),
+                               endDate   = Sys.Date() + 305,
+                               createCSV = "no",                           
+                               roommateNames
+                           ) {
+
+  # create a string of dates between startDate and endDate
+  dateString <- seq(from = startDate,
+                    to   = endDate,
+                    by   = "days")
+
+  # turn it into dataframe
+  data <- as.data.frame(dateString)
+
+  # add weekdays
+  data <- data %>%
+    mutate(days = weekdays(dateString))
+
+  # filter out fridays
+  data <- data %>%
+    filter(days == "vrijdag" | days == "friday")
+  
+  data <- data %>% 
+    rowwise() %>% 
+    mutate(gang     = sample(roommateNames, 1, replace = TRUE),
+           keuken   = sample(roommateNames, 1, replace = TRUE),
+           badkamer = sample(roommateNames, 1, replace = TRUE)
+           )
+  
+  # format dates
+  data <- data %>%
+    mutate(datum = format(dateString, "%d-%m-%y"))
+
+  # delete weekday column and rename
+  data <- data %>%
+    select(datum, 
+           gang,
+           keuken, 
+           badkamer)
+  
+  if (createCSV == "yes") {
+    write.csv(data, file = "schedule.csv")
+  } else {
+      return(data)
+  }
+  
+}
+```
+
+Again, we test the function and show the first 10 rows
+
+```{r}
+kable(createScheduleFull(startDate     = startDate,
+                     endDate       = endDate,
+                     createCSV     = "no", 
+                     roommateNames = roommateNames)[1:10,])
+```
+
+
+### RNG approach 2 {-}
+
+Now, we create the another function which uses the sample function to pick roommates for chores. Every other week three names from the string of six names will be randomly assigned for a task. The next week, the three remaining names from that sample will be assigned. This way, a random sample is taken, but we avoid the problem of someone having multiple chores in one week.
+
+
+```{r semi random schedule}
+createScheduleSemi <- function(startDate = Sys.Date(),
+                           endDate   = Sys.Date() + 305,
+                           createCSV = "no",                           
+                           roommateNames
+                           ) {
+
+  # create a string of dates between startDate and endDate
+  dateString <- seq(from = startDate,
+                    to   = endDate,
+                    by   = "days")
+
+  # turn it into dataframe
+  data <- as.data.frame(dateString)
+
+  # add weekdays
+  data <- data %>%
+    mutate(days = weekdays(dateString))
+
+  # filter out fridays
+  data <- data %>%
+    filter(days == "vrijdag" | days == "friday")
+
+  # draw a random sample, fill the first row with the first three elements of the sampled vector and the row after with the remaining three elements of the sampled vector
+ for(i in seq(from = 1, to = nrow(data), by = 2)){
+    sample       <- sample(roommateNames, 6)
+    data[i,3]    <- sample[1]
+    data[i,4]    <- sample[2]
+    data[i,5]    <- sample[3]
+    data[i+1, 3] <- sample[4]
+    data[i+1, 4] <- sample[5]
+    data[i+1, 5] <- sample[6]
+ }
+  
+  # rename columns for clarity
+ data <- data %>% 
+   rename(gang     = V3,
+          keuken   = V4,
+          badkamer = V5)
+ 
+  # format dates
+  data <- data %>%
+    mutate(datum = format(dateString, "%d-%m-%y"))
+
+  # delete weekday column and rename
+  data <- data %>%
+    select(datum, 
+           gang,
+           keuken, 
+           badkamer)
+  
+  if (createCSV == "yes") {
+    write.csv(data, file = "schedule.csv")
+  } else {
+      return(data)
+  }
+  
+}
+```
+
+Again, we test the function and show the first 10 rows
+
+```{r}
+kable(createScheduleSemi(startDate     = startDate,
+                         endDate       = endDate,
+                         createCSV     = "no", 
+                         roommateNames = roommateNames)[1:10,])
+```
+
+We have now showed three methods to create schedules, where two use a RNG. I would really like to do an analysis go into depth on the statistics of the approaches such as double or triple assignments in a week. Also, I could have done some form of simulation to see if the approaches are fair when done X amount of times.
+
+Unfortunetaly, most of my time went into creating the bookdown/markdown format, so I'll save this part for a later endeavour. Thanks for reading!

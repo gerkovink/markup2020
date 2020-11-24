@@ -1,0 +1,91 @@
+---
+title: "RNG assignment"
+author: "Cassandra"
+date: "27-10-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment
+
+I will keep this assignment *quite* short. 
+
+
+The first important step is to set the seed, to make sure to obtain reproducible results.
+```{r set seed}
+set.seed(111)
+```
+
+
+The RNG will be used in a simple illustration of the effect of sample size in certainty.
+
+```{r random binom}
+sample30 <- mean(rnorm(30, 100, 10))
+sample300 <- mean(rnorm(300, 100, 10))
+
+together <- cbind(sample30, sample300)
+
+print(together)
+
+```
+In itself, this is not very insightful, and any differences could be attributed to randomness. For this reason, we want to replicate the results many times. Thereby obtaining a sampling dsitrbution. 
+
+```{r replicate}
+
+More30 <- replicate(100,mean(rnorm(30, 100, 10)))
+More300 <- replicate(100, mean(rnorm(300, 100, 10)))
+
+
+p30 <- hist(More30, col = rgb(1,0,0,0.5), xlim = c(90, 110), ylim = c(0, 50), breaks = 20, main = 'Comparison histogram', xlab = 'mean')
+p300 <- hist(More300, col = rgb(0,0,1,0.5), add = T, breaks = 10)
+legend("topright", c("300", "30"), col=c("blue", "red"), lwd=10)
+
+
+```
+
+A clear difference in certainty depending on sample size can be seen. 
+
+
+
+##Repeat everything with a different set
+
+```{r set seed 2}
+set.seed(222)
+```
+
+
+The RNG will be used in a simple illustration of the effect of sample size in certainty.
+
+```{r random binom 2}
+sample30 <- mean(rnorm(30, 100, 10))
+sample300 <- mean(rnorm(300, 100, 10))
+
+together <- cbind(sample30, sample300)
+
+print(together)
+
+```
+In itself, this is not very insightful, and any differences could be attributed to randomness. For this reason, we want to replicate the results many times. Thereby obtaining a sampling distribution. 
+
+```{r replicate 2}
+
+More30 <- replicate(100,mean(rnorm(30, 100, 10)))
+More300 <- replicate(100, mean(rnorm(300, 100, 10)))
+
+
+p30 <- hist(More30, col = rgb(1,0,0,0.5), xlim = c(90, 110), ylim = c(0, 50), breaks = 20, main = 'Comparison histogram', xlab = 'mean')
+p300 <- hist(More300, col = rgb(0,0,1,0.5), add = T, breaks = 10)
+legend("topright", c("300", "30"), col=c("blue", "red"), lwd=10)
+
+
+```
+
+Conclusion is the same :)
+
+```{r pressure, echo=FALSE}
+sessionInfo()
+```
+
