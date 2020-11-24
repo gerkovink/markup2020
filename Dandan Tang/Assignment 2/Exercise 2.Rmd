@@ -1,0 +1,96 @@
+---
+title: "Exercise 2"
+author: "Dandan Tang"
+date: "2020/11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+1 Aim
+In this document we explore the confidence validity of bootstrap estimates. The goal of this investigation is to study the possibility of using the bootstrap to simulate a monte carlo experiment on a single (small) data set.
+
+2 Set up
+This section covers the global parameters and the necessary packages for executing the simulation study.
+
+2.1 Fixing the random seed
+```{r}
+set.seed(202)
+```
+2.2 Loading the required packages
+```{r}
+library(bain) # population data from bain 
+library(lavaan)  # SEM
+library(purrr)    # Functional programming
+library(psych)    # Descriptives
+library(knitr)    # 
+library(kableExtra)# output tables
+```
+2.3 Number of simulations
+```{r}
+nsim <-  100
+```
+3 the population data from bain 
+```{r}
+sesamesim 
+m <- length(sesamesim[,1]) # the sample size 
+```
+3.1 Confirmatory factor analysis(CFA) Model of interest, this model has one factor with six indicators. 
+```{r}
+model3 <- 'A  =~ Ab + Al + Af + An + Ar + Ac '
+truefit <- sem(model3, data = sesamesim, std.lv = TRUE)
+```
+4 Draw the bootstrap sets
+We use the replicate() function to draw nsim =100 bootstrap sets from the m rows in the sesamesim.
+```{r}
+simdata <- replicate(nsim, 
+                     sesamesim[sample(1:m, m, replace = TRUE), ], 
+                     simplify = FALSE)
+```
+5 Bias
+First we evaluate the model of interest on each of the drawn bootstrap samples. We do this with the purrr::map() function, which maps the evaluation on each of the listed elements in the simdata object.
+```{r}
+fit <- simdata %>% 
+  map(~ sem(model3, data = .x, std.lv = TRUE))
+```
+Then, we extract the estimates from the fit.
+```{r}
+estimates <- fit %>% 
+  map(coef) %>% 
+  do.call(rbind, args = .) # bind rows into matrix
+```
+The obtained average estimates are
+```{r}
+estimates %>% 
+  describe(quant = c(.025, .975)) %>%
+  .[, c(2:4, 8:9, 11:12, 14:15)] %>%
+  kable("html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = F)
+```
+average estimates
+```{r}
+estimates %>% 
+  colMeans
+```
+6 Confidence Validity
+ manually calculated CI’s
+For unknown σ2β, the 1−α confidence interval for β is defined as
+μ=β^±tn−1,a/2SN−−√.
+. The following code extracts the estimates and the standard error
+```{r}
+manual <- fit %>% 
+  map(function(x) cbind(vcov(x) %>% diag %>% sqrt(.), coef(x))) %>% # est and resp. vars
+  map(function(x) cbind(x[, 2] - qt(.975, 747) * x[, 1],  x[, 2] + qt(.975, 747) * x[, 1])) %>%
+  map(function(x) x[, 1] <= coef(truefit) & coef(truefit) <= x[, 2]) %>%
+  do.call(rbind, args = .) # bind rows into matrix
+```
+7 Results
+Below are the coverages for each of the investigated scenarios. Results are depicted for the coverage of the confidence intervals over the CFA estimates for 100 simulations.
+```{r}
+
+manual%>% 
+  colMeans
+
+```
