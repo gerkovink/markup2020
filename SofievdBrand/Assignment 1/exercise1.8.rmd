@@ -1,0 +1,98 @@
+---
+title: "Exercise 1.8"
+author: "Sofie van den Brand"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 8 Monte Carlo simulation exercise
+Perform a small simulation that does the following:
+sample 100 samples from a standard normal distribution.
+But first: set a seed and load some libraries:
+```{r, results=F}
+set.seed(123)
+library(tidyverse)
+```
+
+Run the simulation:
+filling a matrix where each row presents a new sample.
+```{r}
+samples <- matrix(NA, 100, 1000)
+
+for (i in 1:100) {
+ samples[i,] <- rnorm(1000, m = 0, sd = 1)
+ }
+```
+
+For each of these samples, calculate the following statistics for the mean:
+- absolute bias
+- standard error
+- lower bound of the 95% confidence interval
+- upper bound of the 95% confidence interval
+
+```{r}
+# Bias is sample mean - the mean which we used to create the samples
+bias <- rowMeans(samples) - 0
+mean_sample <- rowMeans(samples) # They are the same, but just for practice I like to keep them separate
+# Variance is standard deviation squared so still 1 (which is also logical because it is a standard normal)
+SE <- rep(1/sqrt(ncol(samples)), 100)
+# lower bound of 95% CI
+lowerCI <- mean_sample - 1.96 * SE
+# upper bound of 95% CI:
+upperCI <- mean_sample + 1.96 * SE
+
+## Putting it all together in a dataframe
+results <- as.data.frame(cbind(mean_sample, bias, SE, lowerCI, upperCI))
+
+```
+Create a plot that demonstrates the following:
+
+“A replication of the procedure that generates a 95% confidence interval that is centered around the sample mean would cover the population value at least 95 out of 100 times” (Neyman, 1934)
+
+Let's create the plot
+```{r}
+ggplot(data = results,
+       aes(
+         x = row.names(results),
+         y = mean_sample,
+         ymin = lowerCI,
+         ymax = upperCI
+       )) +
+  geom_pointrange() + 
+  theme_minimal() + 
+  scale_x_discrete(breaks = c(0, 30, 50, 70, 90))
+```
+
+
+Now it is still hard to see which ones do not contain 0 within the confidence interval. So let's color them.
+
+```{r}
+results <-
+  results %>% mutate(no_mean_CI = case_when(lowerCI < 0 &
+                                              0 < upperCI ~ 0, TRUE ~ 1))
+
+ggplot(data = results,
+       aes(
+         x = row.names(results),
+         y = mean_sample,
+         ymin = lowerCI,
+         ymax = upperCI,
+         color = as.factor(no_mean_CI)
+       )) +
+  geom_pointrange() + theme_minimal() +
+  scale_x_discrete(breaks = c(0, 30, 50, 70, 90))
+```
+
+
+As can be seen, only 5 do not contain a 0 in their confidence interval, which is indeed in line with the statement above. 
+
+
+Present a table containing all simulated samples for which the resulting confidence interval does not contain the population value.
+
+```{r}
+results %>% filter(no_mean_CI == 1)
+```
+
