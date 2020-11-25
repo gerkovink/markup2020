@@ -1,0 +1,139 @@
+---
+title: "Traffic Accidents"
+subtitle: "Presentations in rmarkdown"
+author: "Thomas Wise"
+date: "25/11/2020"
+output:
+  ioslides_presentation:
+    logo: "logo.png"
+bibliography: references_traffic_accidents.bib
+csl: american-medical-association.csl
+---
+
+```{r, include = FALSE}
+library(tidyverse)
+library(plotly)
+library(rmarkdown)
+library(kableExtra)
+
+source("data/traffic.data.loading.R")
+```
+
+<style>
+.forceBreak { -webkit-column-break-after: always; break-after: column; }
+</style>
+
+## The Data {.columns-2}
+
+- This presentation, will use a sample of data from 3.5 million traffic accident records [@moosavi2019countrywide; @moosavi2019accident].  
+- A sample of 10000 has been taken to reduce the computational load when generating the document, and will be used to generate the preliminary statistics.
+
+<p class="forceBreak"></p>
+
+- A sample of 100 will then be used to generate an interactive Map 
+- This data is provided under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+
+## Preliminary Statistics 1
+
+- How does time of day influence the amount of accidents?  
+
+```{r, echo = FALSE, cache = TRUE}
+
+ggplot(data = location.dat, 
+               mapping = aes(x = Civil_Twilight, fill = Severity)) + 
+            geom_bar(position = "dodge") + 
+            labs(x = "Time of Day", y = "Accident Count", 
+                 title = "Influence of Time of Day on Amount of Accidents") + 
+            theme_minimal()
+
+```
+
+## Preliminary Statistics 2
+
+- How does weather influence the amount of accidents?  
+
+```{r out.width='50%', out.height = '50%', echo = FALSE}
+
+weather.tab <- location.dat[,c(1,2,46)]
+weather.tab <- weather.tab %>%
+  group_by(weather_cat) %>%
+  count(Severity) %>% 
+  pivot_wider(
+    names_from = Severity,
+    values_from = n)
+
+# a custom table container
+sketch = htmltools::withTags(table(
+  class = 'display',
+  thead(
+    tr(
+      th(rowspan = 2, 'Weather Category'),
+      th(colspan = 4, 'Severity'),
+    ),
+    tr(
+      lapply(1:4, th)
+    )
+  )
+))
+
+datatable(data = weather.tab,
+          rownames = FALSE,
+          colnames = c("Weather Category", "1", "2", "3", "4"),
+          container = sketch,
+          options = list(
+          pageLength = 5,
+          lengthMenu = c(3, 5)
+          ))
+
+```
+
+## Preparing Mapped Accidents 
+
+- As 10,000 accidents is a lot to map on a single interactive map. Some measures should be taken to display only a sample of these points. 
+- For this we can use the function **sample_n()**, where a random sample of 100 accidents is taken from the database.
+
+
+```{r}
+location.samp.dat <- sample_n(location.dat, 
+                            size = 100, 
+                            replace = FALSE)
+```
+
+## Mapping Accidents 
+
+Then using the package [leaflet](https://leafletjs.com/), these sampled points can be plotted on an interactive map.
+
+```{r, echo = FALSE}
+        
+        leaflet() %>%
+        addTiles() %>%
+        addMarkers(data = location.samp.dat,
+                   lat = ~latitude, lng = ~longitude,
+                   popup = ~popuplabel)
+
+```
+
+## Surpise Equation 
+
+I couldn't find another place to put this, so here is a multi-row equation.
+
+$$
+\begin{align}
+Sharks &= Grey, \\
+Squirrels  &= Grey, \\
+Sharks &= Squirrels 
+\end{align} 
+$$
+<center>
+<img src = "data/skiing-squirrel.jpeg" />
+</center>
+
+## Additional Note:
+
+This presentation was based upon the in-development shiny project found [here](https://twise.shinyapps.io/Traffic_Accident_Dashboard/)
+
+
+
+## References {.allowframebreaks}
+\tiny
