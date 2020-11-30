@@ -1,0 +1,148 @@
+---
+title: " Interesting Facts about Tennis  "
+author: "Tabea Röber"
+date: "11/26/2020"
+output: 
+  ioslides_presentation:
+    css: styles.css
+    logo: me.png
+bibliography: references.bib
+---
+
+## Content of this presentation {.smaller}
+
+As you probably know, tennis is a racket sport that is widely popular. In this short presentation I'd like to tell you some basic and hopefully also interesting (fun) facts about tennis. 
+
+
+<div class="columns-2">
+
+  **I will focus on these points: **
+
+  - What is tennis, how do you play it? 
+
+  - Some data
+
+  - Fun Facts
+
+  - Last but not least
+  
+  
+  
+  ![](https://images.unsplash.com/photo-1542144582-1ba00456b5e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1013&q=80){width=280}
+
+
+</div>
+
+
+
+
+
+## What is tennis, and how do you play it? {.smaller}
+
+<center>
+
+Tennis is a sport that can be played individually against a single oppponent
+(called *single*), or with teams of two players each (called *double*).
+
+
+![](https://images.unsplash.com/flagged/photo-1576972405668-2d020a01cbfa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1653&q=80){width=500}
+
+</center>
+
+
+
+## Some data {.smaller}
+
+The table below displays data on the Finals of competitions worldwide, from 1991-2016. [@datahub_2018]
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DT)
+library(stringr)
+library(plotly)
+```
+
+```{r echo=FALSE, cache=TRUE}
+dat <- read.csv("match_scores_1991-2016_unindexed_csv.csv")
+
+dat1 <- dat %>% 
+  filter(tourney_round_name == "Finals") %>%
+  mutate(year = as.numeric(str_split_fixed(tourney_year_id, "-", 2)[,1])) %>%
+  select(year, tourney_slug, winner_name, 
+         loser_name, match_score_tiebreaks) %>%
+  rename(location = tourney_slug, winner = winner_name, loser = loser_name, 
+         match_score = match_score_tiebreaks)
+```
+
+
+```{r echo=FALSE }
+datatable(dat1, options = list(pageLength = 8), rownames = NULL)
+```
+
+## Some data {.smaller}
+
+If you wanted to look at Semi-Finals, you could use the following code: 
+
+```{r eval=FALSE}
+dat1 <- dat %>% 
+  filter(tourney_round_name == "Semi-Finals") %>%
+  mutate(year = as.numeric(str_split_fixed(tourney_year_id, "-", 2)[,1])) %>%
+  select(year, tourney_slug, winner_name, 
+         loser_name, match_score_tiebreaks) %>%
+  rename(location = tourney_slug, winner = winner_name, loser = loser_name, 
+         match_score = match_score_tiebreaks)
+
+datatable(dat1, options = list(pageLength = 8), rownames = NULL)
+```
+
+This code would produce the exact same table as on the slide before, but for Semi-Finals instead of Finals. 
+
+
+## Some data {.smaller}
+
+Below, I have visualised Roger Federer's wins over the years. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height=4}
+dat2 <- dat1 %>% 
+  group_by(year) %>%
+  summarise(Federer = sum(winner=="Roger Federer"), 
+            Nadal = sum(winner=="Rafael Nadal")) %>%
+  pivot_longer(., cols = c(Federer, Nadal), names_to ="who", values_to ="wins")
+
+p <- dat2 %>%
+  ggplot(aes(x=year, y=wins, fill=who)) + 
+  geom_bar(stat="identity", position=position_dodge()) + 
+  theme_minimal() + 
+  scale_fill_brewer(palette="Blues")
+
+ggplotly(p)
+```
+
+
+## Fun Facts [@factfile_2020] {.smaller}
+
+- Every year, **24 tons of strawberries** are consumed during Wimbledon.
+
+- Tennis balls were originally white. In 1986, yellow balls were first introduced at Wimbledon.
+
+- An estimated 54,250 tennis balls are used during Wimbledon.
+
+- The first set of sisters to ever win Olympic gold medals in tennis were Venus and Serena Williams.
+
+## Last but not least {.smaller}
+
+Since I have not yet included a mathematical formula, I will do this now. 
+
+\[\begin{align}
+  a &= b + c^2 \\
+  a - c^2 &= b, \\
+  \text{left side} &= \text{right side,} \\
+  \text{left side} + \text{something} &\geq \text{right side,}
+\end{align}\]
+
+
+**Disclaimer: This formula has nothing to do with tennis.**
+
+
+## References
