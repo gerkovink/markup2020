@@ -1,0 +1,149 @@
+---
+title: "Synthetic data"
+author: "Thom Volker"
+date: "12/3/2020"
+output: 
+  ioslides_presentation:
+    logo: MICE_sticker_SMALL.png
+bibliography: ref.bib
+csl: "apa-6th-edition.csl"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, include = FALSE}
+library(mice)
+library(tidyverse)
+```
+
+## Real data table
+
+```{r}
+dat <- boys %>% mice(m = 1, print = F) %>% complete()
+
+dat %>% DT::datatable(options = list(pageLength = 7))
+```
+
+## Real data plot
+
+```{r, fig.align = 'center'}
+
+(real_plot <- 
+  dat %>%
+    select_if(is.numeric) %>%
+    pivot_longer(cols = everything(), names_to = c("Variable")) %>%
+    ggplot(., mapping = aes(x = value)) +
+      geom_histogram(fill = "#E41A1C", bins = 30) +
+      facet_wrap(~ Variable, nrow = 3, ncol = 2, scales = "free") +
+      theme_classic() +
+      scale_fill_brewer(palette = "Set1") +
+      theme(legend.position = "bottom"))
+```
+
+## Synthetic data
+
+Synthetic data can be generated easily, like this:
+
+```{r, cache = TRUE, echo = TRUE}
+# specify cart and alter predictor matrix
+cart <- rep("cart", ncol(dat))
+names(cart) <- colnames(dat)
+cart['bmi'] <- "~I(wgt / (hgt/100)^2)"
+
+pred <- make.predictorMatrix(dat)
+pred[c("wgt", "hgt"), "bmi"] <- 0
+
+syns <- dat %>% mice(m = 5, 
+                     method = cart,
+                     predictorMatrix = pred,
+                     where = matrix(TRUE, nrow(dat), ncol(dat)),
+                     print = F,
+                     seed = 123)
+```
+
+## Real and synthetic data
+
+```{r}
+completed <- complete(syns, action = "all")
+
+(comparison_plot <- 
+    completed %>%
+    map_dfr(function(x) x) %>%
+    bind_rows(., dat, .id = "Imputed") %>%
+    mutate(Imputed = as.numeric(Imputed)) %>%
+    select_if(is.numeric) %>%
+    pivot_longer(cols = -"Imputed",
+                 names_to = c("Variable")) %>%
+    mutate(Imputed = recode(Imputed, `1` = "Synthetic data", `2` = "Observed data")) %>%
+    ggplot(., mapping = aes(x = value, fill = Imputed)) +
+      geom_histogram(aes(y = ..density..), position = "dodge2", bins = 30) +
+      facet_wrap(~ Variable, nrow = 3, ncol = 2, scales = "free") +
+      theme_classic() +
+      scale_fill_brewer(palette = "Set1") +
+      theme(legend.position = "bottom"))
+```
+
+## Something interactive
+
+<div style="float: left; width: 30%;">
+
+On the right, there is a plot of the distribution of age, with the actually observed data in red, and the synthetic data averaged over the five imputation rounds in blue.
+
+</div>
+
+<div style="float: right; width: 70%;">
+
+
+```{r, out.width="100%"}
+age_plot <- 
+  completed %>%
+    map_dfr(function(x) x) %>%
+    bind_rows(., dat, .id = "Imputed") %>%
+    mutate(Imputed = as.numeric(Imputed)) %>%
+    select(age, Imputed) %>%
+    mutate(Imputed = recode(Imputed, `1` = "Synthetic data", `2` = "Observed data")) %>%
+    ggplot(., mapping = aes(x = age, fill = Imputed)) +
+      geom_histogram(aes(y = ..density..), position = "dodge2", bins = 20) +
+      theme_classic() +
+      scale_fill_brewer(palette = "Set1") +
+      theme(legend.position = "bottom")
+
+plotly::ggplotly(age_plot)
+```
+</div>
+
+## Inferences from synthetic data
+
+To make correct inferences from the synthetic data, we need to use the correct estimators. For instance, we could have
+
+<div style="float: left; width: 50%;">
+
+$$
+\begin{align}
+\bar{q}_m &= \frac{1}{m}\sum^m_{i=1} q^{(i)}, \\
+b_m &= \sum^m_{i = 1} \frac{(q^{(i)} - \bar{q}_m)^2}{m-1},
+\end{align}
+$$
+
+</div>
+
+<div style="float: right; width: 50%;">
+
+$$
+\begin{align}
+\bar{u}_m &= \frac{1}{m} \sum^m_{i = 1} u^{(i)}, \\
+T_f &= (1 + \frac{1}{m})b_m - \bar{u}_m,
+\end{align}
+$$
+</div>
+
+\ 
+\
+
+with $\bar{q}_m$ the mean of the estimates, $b_m$ the between-variability, $\bar{u}_m$ the within data variability, $u^{(i)}$ the within-variance and $T_f$ the total variance of the estimate, as proposed by @raghu.
+
+## References
+
+
