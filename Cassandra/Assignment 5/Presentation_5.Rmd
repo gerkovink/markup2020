@@ -1,0 +1,113 @@
+---
+title: "Presentation"
+author: "Cassandra"
+output: 
+  ioslides_presentation:
+    logo: uu_logo.png
+bibliography: ref.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(DT)
+library(knitr)
+library(ggplot2)
+library(plotly)
+library(ISLR)
+```
+
+## Plot
+
+```{r cache = TRUE, echo=FALSE, message=FALSE, warning=FALSE}
+
+Carseats_plot <- 
+  ggplot(Carseats, aes(x = Price, y = Sales)) +
+  geom_point() + 
+  facet_wrap(Carseats$Urban) + theme(plot.margin = margin(1,1,1,1, 'cm'))
+
+Carseats_plot <- Carseats_plot + labs(ylab = 'Number of carseats sold', xlab = 'Price of carseats in dollars')
+
+ggplotly(Carseats_plot) %>% 
+  layout(title = list(text = paste0("Relationship between price of carseats, and sales of carseats", 
+  '<br>',
+  '<sup>',
+  'Split on rural and urban areas',
+  '</sup>'
+    
+  )))
+
+
+
+```
+
+
+
+---
+
+<div class = 'columns-2'>
+
+I am not at a point where I can start working on my thesis presentation
+
+So I am just going to use this as practice, and pop some random stuff in here. 
+
+<div class = 'centered'>
+
+![](groot.gif) 
+
+</div>
+</div>
+
+## A little cuteness
+
+```{r groot, out.width = '70%', fig.align = 'center', echo = FALSE}
+
+include_graphics('figure_grogu.png')
+
+```  
+
+## Code and a formula
+
+Some code that I use for a tiny part of my thesis. 
+
+```{r code thesis, eval = FALSE, echo = TRUE}
+
+crit_p_rob <- function(time_windows, electrodes) {
+  
+  crit_p <- sqrt(0.05 / ((time_windows -1) * electrodes))
+  
+  return(crit_p)
+}
+
+
+```
+
+Nice to show the same thing in a formula
+
+
+$$P_{crit} = \sqrt{\dfrac{0.05} {(timewindows - 1) * electrodes}}$$
+[@Formula]
+
+## Interactive table
+
+```{r cars, echo = FALSE, warnings = FALSE}
+library(DT)
+
+datatable(iris, 
+           extensions = c("Buttons" ,"FixedColumns"),
+           filter = 'top',
+           options = list( autoWidth = TRUE , 
+                           dom = 'Blftip',
+                           pageLength = 10,
+                           searchHighlight = FALSE,
+                           scrollX = TRUE,
+                           fixedColumns = list(leftColumns = 2)),
+           class = c('compact cell-border stripe hover') ,
+           rownames = FALSE) 
+```
+
+## References
+
+<div id = 'refs'></div>
+
+
