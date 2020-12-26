@@ -1,0 +1,74 @@
+---
+title: "Exercise 5 Example Presentation"
+author: "Yongchao Terry Ma"
+date: "12/26/2020"
+output: 
+  ioslides_presentation:
+    logo: https://upload.wikimedia.org/wikipedia/en/thumb/2/26/Utrecht_University_logo.svg/1200px-Utrecht_University_logo.svg.png
+    smaller: TRUE
+bibliography: bibliography.bib
+
+---
+
+```{r setup, include=FALSE}
+library(DT)
+library(plotly)
+```
+
+
+## A centered still figure
+Me
+<center>
+<img src="figures/me.jpeg" alt="HTML5 Icon" width = 40%>
+</center>
+
+
+## An interactive table
+```{r}
+datatable(mtcars, options = list(pageLength = 5))
+```
+
+
+## An interactive figure
+```{r cache=TRUE, echo=FALSE}
+set.seed(123)
+
+df <- data.frame(x <- rchisq(1000, 5, 10),
+                 group <- sample(LETTERS[1:5], size = 1000, replace = T))
+
+p <- ggplot(df, aes(x, fill = group)) + 
+  geom_density(alpha = 0.5, position = "stack") + 
+  ggtitle("stacked density chart")
+ggplotly(p)
+```
+
+
+## A 2-column slide
+<div class="columns-2">
+  - First Name: Yongchao
+  - Last Name: Ma
+  - Also known as: Terry
+  
+  I am a research master student and research assistant in the Department of Methodology and Statistics.
+  
+  Currently, I am writing my Master's thesis at **Statistics Netherlands (CBS)** under the supervision of Dr. Nino Mushkudiani and Prof. Dr. Barry Schouten. My research project is **optimal stratification in Bayesian adaptive survey designs**. This research aims to reduce nonresponse bias by effectively and efficiently stratifying the target population into subgroups that can be approached by different data collection strategies.
+  
+  I am also a core team member of **ASReview** – open-source software for screening academic papers with machine learning techniques [@vandeschoot2020open]. Under the supervision of Prof. Dr. Rens van de Schoot, **my task involves** 1) preprocess the metadata of training data sets, 2) back-end Python API, and front-end Javascript UI development.
+</div>
+
+
+## An aligned multi-row equation
+\[\begin{align}
+  a&=b+c^2 \\
+  a-c^2&=b
+\end{align}\]
+
+
+## R code (displayed but not executed)
+```{r eval=FALSE}
+str(mtcars)
+```
+
+
+## Reference
+
