@@ -1,0 +1,73 @@
+---
+title: "Random presentation"
+author: "Rianne Kraakman"
+date: "19-1-2021"
+output: ioslides_presentation
+logo: uulogo.png
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+library(DT)
+library(plotly)
+```
+
+## A centered still figure
+
+<center>
+  <img src = "https://ca-times.brightspotcdn.com/dims4/default/0716824/2147483647/strip/true/crop/466x600+0+0/resize/840x1082!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F43%2F6a2299ab7b1ef9983bd2801fed13%2Fla-et-st-elmo-and-cookie-monster-to-star-in-fu-001" width = 40%>
+  </center>
+
+## An interactive table
+
+```{r}
+datatable(iris, options = list(pageLength = 6))
+```
+
+## An interactive figure
+
+```{r cache = TRUE, echo = FALSE}
+plot <- ggplot(data=iris,aes(x=Sepal.Width, y=Sepal.Length,color=Species)) + geom_point() +geom_smooth() + theme_minimal()
+
+ggplotly(plot)
+```
+
+## A 2-column slide
+
+<div class="columns-2">
+  Here on the left side I can write some text, but on the other side I have some bullet points.
+  The references for the information given can be found on the last slide.
+
+  - The earth is round (or not) [@cohen1994earth]
+  - Climate change affects ecology [@thuiller2007climate]
+  - Sedentary behavior is a problem [@owen2010too]
+</div>
+
+## An aligned multi-row equation
+
+$$
+\begin{align}
+a &= b + c^2, \\
+a - c^2 &= b, \\
+\text{left side} &= \text{right side}, \\
+\text{left side} + \text{something} &\geq \text{right side}, 
+\end{align}
+$$
+
+or we could do it like this:
+$$
+\begin{align}
+a = b + c^2, \\
+a - c^2 = b, \\
+\text{left side} = \text{right side}, \\
+\text{left side} + \text{something} \geq \text{right side}, 
+\end{align}
+$$
+
+## R-code displayed but not executed
+```{r eval = FALSE}
+summary(iris)
+```
+
+## References
+
