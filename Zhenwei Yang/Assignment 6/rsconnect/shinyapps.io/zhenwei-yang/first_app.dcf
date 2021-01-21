@@ -1,0 +1,12 @@
+name: first_app
+title: first_app
+username:
+account: zhenwei-yang
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3470487
+bundleId: 4092122
+url: https://zhenwei-yang.shinyapps.io/first_app/
+when: 1610564386.53287
+asMultiple: FALSE
+asStatic: FALSE

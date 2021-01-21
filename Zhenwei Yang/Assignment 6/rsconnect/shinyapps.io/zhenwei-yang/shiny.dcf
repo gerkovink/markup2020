@@ -1,0 +1,12 @@
+name: shiny
+title: shiny
+username:
+account: zhenwei-yang
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3470484
+bundleId: 4092117
+url: https://zhenwei-yang.shinyapps.io/shiny/
+when: 1610564334.9264
+asMultiple: FALSE
+asStatic: FALSE
