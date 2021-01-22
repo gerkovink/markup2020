@@ -9,10 +9,14 @@
 
 ## 2. Research Repository
 
-- Due to the security reason, the repository is kept private. For the sake of grading, the access have been given to ``Gerko Vink`` (@gerkovink) temporarily.
+- Due to the security reason, the repository is kept private. For the sake of grading, the access have been given to [``Gerko Vink (@gerkovink)``](https://github.com/gerkovink) temporarily.
 - To approach the corresponding repository, click [here](https://github.com/IhnwhiHeo/msc-thesis).
 
 ## 3. Markup Manuscript
 
 - To approach the research report, click [here](https://github.com/IhnwhiHeo/Research-Report/blob/main/Heo-Thesis/Heo-Thesis.pdf).
 - To approach the corresponding repository, click [here](https://github.com/IhnwhiHeo/Research-Report).
+
+## 4. Concluding Remark
+
+- *Ik ben altijd dingen aan het doen die ik nog niet kan om zo te leren hoe ik ze moet doen*. - **Vincent van Gogh**, a Dutch artist
