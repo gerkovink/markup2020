@@ -1,6 +1,6 @@
 # Markup Languages and Reproducible Programming in Statistics Final Submission
 
-### Author: Ihnwhi Heo
+### Author: [Ihnwhi Heo](http://ihnwhiheo.github.io/) (6213324)
 
 ## 1. Personal Repository
 
@@ -9,7 +9,8 @@
 
 ## 2. Research Repository
 
-- For the security reasons, I sent an email to ``G.Vink@uu.nl``.
+- Due to the security reason, the repository is kept private. For the sake of grading, the access have been given to ``Gerko Vink`` (@gerkovink) temporarily.
+- To approach the corresponding repository, click [here](https://github.com/IhnwhiHeo/msc-thesis).
 
 ## 3. Markup Manuscript
 
