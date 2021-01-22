@@ -1,4 +1,0 @@
-Hypothesis 1. Ihnwhi enjoys methodology and statistics.
-p-value = 0.051, BF10 = 9.99
-Hypothesis 2. Ihnwhi is tired.
-p-value = 0.501, BF01 = 0.01
