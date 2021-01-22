@@ -1,0 +1,114 @@
+---
+title: "Presentation"
+author: "Ruben van den Goorbergh"
+date: "1/22/2021"
+output:
+   ioslides_presentation:
+    logo: logo.png
+
+references:
+- id: covid
+  title: Effects of COVID on College Students’ Mental Health in the United States
+  author:
+  - family: Son
+    given: C
+  - family: Hedge
+    given: S
+  - family: Smith
+    given: A
+  - family: Wang
+    given: X
+  - family: Sasangohar
+    given: F
+
+  container-title: Journal of Medical Internet Research
+  volume: 22
+  URL: 'http://citeproc-js.readthedocs.io'
+  DOI: 10.2196/21279
+  issue: 9
+  publisher: JMIR 
+  page: 261-263
+  type: article-journal
+  issued:
+    year: 2020
+    month: 9
+---
+# Corona and my my Social Life: a sad, sad story
+
+## Before Corona..
+
+
+```{r, echo=FALSE, message=FALSE}
+library(tidyverse)
+month <- seq.Date(from = as.Date("2019/1/1"), to = as.Date("2019/12/1"), by = "month")
+number_social_activity <- c(10,15,16,15,16,21,25,25,20,19,15,20)
+dat <- tibble(month, number_social_activity)  
+dat %>% 
+  ggplot(aes(x = month, y = number_social_activity)) +
+  geom_col()
+
+
+```
+
+## All those fun conversations I had...
+```{r, echo=FALSE, message=FALSE}
+require(DT)
+date <- seq.Date(from = as.Date("2019/1/1"), to = as.Date("2019/12/31"), by = "day")
+conversations <- round(rnorm(365, mean = 7, sd = 2))
+
+tibble(date, conversations) %>% 
+  datatable(options = list(pageLength = 5))
+```
+
+## And then Corona came...
+```{r, out.width = "70%", fig.align = 'center', echo=FALSE, message=FALSE, cache=TRUE}
+library(gganimate)
+month <- seq.Date(from = as.Date("2020/1/1"), to = as.Date("2020/12/1"), by = "month")
+number_social_activity <- c(16,17,9,0,3,5,6,6,5,3,2,2)
+n_month <- seq(1, 12 , 1)
+dat2 <- rbind(tibble(month, number_social_activity), dat)  
+
+plot <- dat2 %>% 
+  ggplot(aes(x = month, y = number_social_activity)) +
+  geom_line()
+
+plot + transition_reveal(month)
+```
+```{r, eval = FALSE }
+a <- 'I'
+b <- "am"
+c <- "bored"
+
+# a+b+c = ?
+```
+
+
+<div class="columns-2">
+## The difference:'(
+```{r, echo = FALSE, fig.width=3, fig.height=5}
+dat %>% 
+  ggplot(aes(x = month, y = number_social_activity)) +
+  geom_col()+
+  ggtitle("Before")
+```
+```{r, echo=FALSE, fig.width=3, fig.height=5}
+dat2 %>% 
+  ggplot(aes(x = month, y = number_social_activity)) +
+  geom_col() +
+  ggtitle("After")
+```
+</div>
+
+## Predicting social activity
+To predict the number of social interction in the future, I fitted ~~made up~~
+this linear combination of predictors: 
+$$
+\begin{aligned}
+soc\_ac\_p\_month =& 15 -10 * lockdown + 3 * spring +  \\ &7 * summer+ 2* fall + -5 * cerfew + \\ & 2 * fight\_with\_girlfriend
+\end{aligned}
+$$
+
+I'm glad it I don't suffer from serious mental health issues as other students do
+accordingly to @covid
+
+## References
