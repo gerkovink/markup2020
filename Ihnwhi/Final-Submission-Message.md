@@ -9,8 +9,8 @@
 
 ## 2. Research Repository
 
-- Due to the security reason, the repository is kept private. For the sake of grading, the access have been given to [``Gerko Vink (@gerkovink)``](https://github.com/gerkovink) temporarily.
-- To approach the corresponding repository, click [here](https://github.com/IhnwhiHeo/msc-thesis).
+- Due to the security reason, the repository is kept private. For the sake of grading, the access have been given to Dr. [``Gerko Vink (@gerkovink)``](https://github.com/gerkovink) temporarily. **Please** check the email.
+- To approach the corresponding repository (once you are given an access), click [here](https://github.com/IhnwhiHeo/msc-thesis).
 
 ## 3. Markup Manuscript
 
