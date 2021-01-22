@@ -1,4 +1,4 @@
-# Markup Languages and Reproducible Programming in Statistics Final Submission
+# Markup Languages and Reproducible Programming in Statistics Final Submission to
 
 ### Author: [Ihnwhi Heo](http://ihnwhiheo.github.io/) (6213324)
 
@@ -9,8 +9,8 @@
 
 ## 2. Research Repository
 
-- Due to the security reason, the repository is kept private. For the sake of grading, the access have been given to Dr. [``Gerko Vink (@gerkovink)``](https://github.com/gerkovink) temporarily. **Please** check the email.
-- To approach the corresponding repository (once you are given an access), click [here](https://github.com/IhnwhiHeo/msc-thesis).
+- Due to security reasons, the repository is kept private. For the sake of grading, the access has been given to Dr. [``Gerko Vink (@gerkovink)``](https://github.com/gerkovink) temporarily. **Please** check the email.
+- To approach the corresponding repository (once you are given access), click [here](https://github.com/IhnwhiHeo/msc-thesis).
 
 ## 3. Markup Manuscript
 
