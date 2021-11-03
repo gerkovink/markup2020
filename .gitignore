@@ -37,3 +37,10 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Other
+markup_sticker_SMALL.psd
+.DS_Store
+markup_banner.png
+markup_banner.psd
+markup_banner copy.png
