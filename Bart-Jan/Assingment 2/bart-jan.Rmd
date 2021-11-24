@@ -1,0 +1,44 @@
+---
+title: "Markup languages - Week 2"
+author: "Bart-Jan Boverhof"
+date: "10/12/2020"
+output: html_document
+---
+
+
+The subsequent code helps visualizing bias due to RNG. The function randomly generates a string of *n* values accoring to given probability of *prob*. This is replicated *replications* amount of times. The function outputs the error due to sampling as compared with the true probability *prob*. 
+
+```{r}
+binomial.prob <- function(prob, n = 10000, replications = 10000)
+{
+  y <- matrix(nrow = replications, ncol = n)
+  z <-  matrix(nrow = replications, ncol =1)
+  
+  prob.inv <- (1/prob)
+  
+  for(i in 1:replications) {
+      y[i,] <- round(runif(n,min=1,max=prob.inv))
+      
+      test.number <- round(runif(1,max= prob.inv))
+      
+      z[i,] <- sum(y[i,] == test.number) / n
+      
+    }
+  return(abs (mean(z) - prob))
+}
+
+set.seed(3791)
+(bias <- binomial.prob(prob = (1/10), n =1000, replications = 1000))
+```
+as can be discerned by running the function, the resulting average bias due to sampling equals `r bias` in seed `r 3791`. 
+
+
+Replication: 
+```{r}
+set.seed(3791)
+bias2 <- binomial.prob(prob = (1/10), n =1000, replications = 1000)
+bias == bias2
+```
+As can be discerned, replication yields exactly the same value. 
+
+

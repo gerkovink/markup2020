@@ -1,0 +1,105 @@
+\documentclass[11pt]{beamer}
+\geometry{papersize={16cm,9cm}}
+\usetheme{default}
+\usecolortheme{beaver}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Example document to recreate with beamer in \LaTeX}
+\setbeamerfont{title}{size=\fontsize{14}{14}}
+\subtitle{}
+\author{Your Name}
+\date{}
+
+
+\begin{document}
+
+%--- the titlepage frame -------------------------%
+\begin{frame}[plain]
+  \vspace*{1.5cm}\titlepage  
+  \vspace*{1cm}
+  \centering Fall 2019 \\ Markup Languages and Reproducible Programming in Statistics\par
+\end{frame}
+
+%--- slide 1 -------------------------%
+\begin{frame}{Outline}
+
+Working with equations \\
+  \hspace*{0.5cm}
+  Aligning the same equations \\
+  \hspace*{0.5cm}
+  Omit equation numbering \\
+  \hspace*{0.5cm}
+  Ugly alignment \\
+\bigskip
+\bigskip
+Discussion
+
+\end{frame}
+
+%--- slide 2 -------------------------%
+\begin{frame}{Working with equations}
+
+We define a set of equations as
+\begin{gather}
+a = b + c^2, \\
+a - c^2 = b, \\
+\text{left side} = \text{right side}, \\
+\text{left side} + \text{something} \geq \text{right side}, 
+\end{gather}
+for all something $>$ 0.
+
+\end{frame}
+
+%--- slide 3 -------------------------%
+\begin{frame}{Aligning the same equations}
+
+Aligning the equations by the equal sign gives a much better view into the placements of the separate equation components.
+\begin{align}
+a &= b + c^2, \\
+a - c^2 &= b, \\
+\text{left side} &= \text{right side}, \\
+\text{left side} + \text{something} &\geq \text{right side}, 
+\end{align}
+
+\end{frame}
+
+%--- slide 4 -------------------------%
+\begin{frame}{Omit equation numbering}
+
+Alternatively, the equation numbering can be omitted.
+\begin{align*}
+a &= b + c^2, \\
+a - c^2 &= b, \\
+\text{left side} &= \text{right side}, \\
+\text{left side} + \text{something} &\geq \text{right side}, 
+\end{align*}
+
+\end{frame}
+
+%--- slide 5 -------------------------%
+\begin{frame}{Ugly alignment}
+
+Some components do not look well, when aligned. Especially equations with different heights and spacing. For example,
+\begin{align}
+E &= m c^2, \\
+m &= \frac{E}{c^2}, \\
+c &= \sqrt{\frac{E}{m}}. 
+\end{align}
+Take that into account.
+
+\end{frame}
+
+%--- slide 6 -------------------------%
+\begin{frame}{Discussion}
+
+This is where you'd normally give your audience a recap of your talk, where you could discuss e.g. the following
+\begin{itemize}
+  \item Your main findings
+  \item The consequences of your main findings
+  \item Things to do
+  \item Any other business not currently investigated, but related to your talk
+\end{itemize}
+
+\end{frame}
+
+\end{document}
