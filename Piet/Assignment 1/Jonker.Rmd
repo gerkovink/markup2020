@@ -1,0 +1,8 @@
+---
+title: "Jonker"
+author: "Piet Jonker"
+date: "9/16/2020"
+output: pdf_document
+---
+
+![Audio file not found](/Users/pietjonker/Downloads/piet_gitaar.jpeg)]
