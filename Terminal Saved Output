@@ -1,0 +1,378 @@
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git pull 
+Already up to date.
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git checkout Exercise_wk4
+branch 'Exercise_wk4' set up to track 'origin/Exercise_wk4'.
+Switched to a new branch 'Exercise_wk4'
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log --graph 
+*   commit 176137b1667cc6903f7a9eead5723892ef1a77a7 (HEAD -> Exercise_wk4, origin/Exercise_wk4)
+|\  Merge: 0e67723 c902093
+| | Author: Gerko Vink <g.vink@uu.nl>
+| | Date:   Thu Oct 29 12:44:01 2020 +0100
+| | 
+| |     Merge pull request #38 from thomasjwise/wisedev
+| |     
+| |     Assignment 3 - Beamer PDF
+| |     
+| |     Well done ✅
+| | 
+| * commit c9020931678d90d91cfe21778e6ce5b4943e46cb
+| | Author: Thomas Wise <48682160+thomasjwise@users.noreply.github.com>
+| | Date:   Wed Oct 28 13:59:23 2020 +0100
+| | 
+| |     Assignment 3 - Beamer PDF
+| |   
+* |   commit 0e67723572744b769389f5b8883c9f1aa6a3b7dd
+|\ \  Merge: 4134b75 1f488c6
+| | | Author: Gerko Vink <g.vink@uu.nl>
+| | | Date:   Thu Oct 29 11:27:16 2020 +0100
+| | | 
+| | |     Merge pull request #39 from gerkovink/SofieIssue
+| | |     
+| | |     Pipe operator poses issue on non-unix
+| | | 
+| * | commit 1f488c650b639dcc17c80b809e8073764fecd0ca
+| | | Author: Gerko Vink <g.vink@uu.nl>
+| | | Date:   Thu Oct 29 11:24:50 2020 +0100
+| | | 
+| | |     remove pipe operator
+| | | 
+| * | commit 4ead4069983f39e4955eb660e307dc19838ea7c0
+|/ /  Author: Gerko Vink <g.vink@uu.nl>
+| |   Date:   Thu Oct 29 08:03:48 2020 +0100
+| |   
+| |       update readme.md
+| |   
+* |   commit 4134b75d0087bd7424938fc84268a2f8f27fcb11
+|\ \  Merge: f277a35 f50014b
+| | | Author: Gerko Vink <g.vink@uu.nl>
+| | | Date:   Wed Oct 28 10:58:19 2020 +0100
+| | | 
+| | |     Merge pull request #37 from pietjonker/piet
+| | |     
+| | |     Piet (assignment 2)
+| | |     
+| | |     @pietjonker Well done!
+| | | 
+| * | commit f50014b68f811fdf16ecc0aa005e50a50dd19766
+| | | Author: pietjonker <piet.jonker@hotmail.com>
+| | | Date:   Wed Oct 28 10:53:42 2020 +0100
+| | | 
+| | |     commit assignment 2
+| | | 
+| * | commit 5ae2b9b736adce4464405b76dc4e65dfa6eaa4b9
+| | | Author: pietjonker <piet.jonker@hotmail.com>
+| | | Date:   Tue Oct 27 17:06:45 2020 +0100
+| | | 
+| | |     Assignment 1 and 2
+| | |   
+* | |   commit f277a35d65e01500548e534c1bc6363776366696
+|\ \ \  Merge: 43fb1ed 1c9aad6
+| | | | Author: Gerko Vink <g.vink@uu.nl>
+| | | | Date:   Wed Oct 28 07:50:16 2020 +0100
+| | | | 
+| | | |     Merge pull request #35 from zoedunias/zoedev
+| | | |     
+| | | |     Added Exercise 2
+| | | | 
+| * | | commit 1c9aad62701fad5ad277641bd2a3dd8771ab6f8d
+| | | | Author: Zoe <zoedunias@hotmail.com>
+| | | | Date:   Wed Oct 28 00:52:51 2020 +0100
+| | | | 
+| | | |     Added Exercise 2
+| | | |   
+* | | |   commit 43fb1ed9f1da598c38034e476a9998310aabd2d2
+|\ \ \ \  Merge: d3df110 75d9293
+| | | | | Author: Gerko Vink <g.vink@uu.nl>
+| | | | | Date:   Tue Oct 27 21:38:57 2020 +0100
+| | | | | 
+| | | | |     Merge pull request #34 from RianneKraakman/riannedev
+| | | | |     
+| | | | |     Added assignment 2
+| | | | | 
+| * | | | commit 75d92935ad4fe5f67302356982e95fe570e4dd64
+| | | | | Author: Rianne Kraakman <71925587+RianneKraakman@users.noreply.github.com>
+| | | | | Date:   Tue Oct 27 21:23:17 2020 +0100
+| | | | | 
+| | | | |     Add assignment 2
+| | | | |   
+* | | | |   commit d3df110966362816561e3b4b4b2baceed0c3a89c
+|\ \ \ \ \  Merge: de85f89 34954f8
+| | | | | | Author: Gerko Vink <g.vink@uu.nl>
+| | | | | | Date:   Tue Oct 27 21:22:14 2020 +0100
+| | | | | | 
+| | | | | |     Merge pull request #33 from gerkovink/gerkodev
+| | | | | |     
+| | | | | |     Merge pull request #22 from Goorbergh/ruben_assignment_1 into master
+| | | | | |   
+| * | | | |   commit 34954f8a5744d6f911db067c4a5de51b2bbb4fe1
+| |\ \ \ \ \  Merge: f4a11cb 76b3995
+| | | | | | | Author: Gerko Vink <g.vink@uu.nl>
+| | | | | | | Date:   Tue Oct 27 20:49:49 2020 +0100
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log --oneline --graph
+*   176137b (HEAD -> Exercise_wk4, origin/Exercise_wk4) Merge pull request #38 from thomasjwise/wisedev
+|\  
+| * c902093 Assignment 3 - Beamer PDF
+* |   0e67723 Merge pull request #39 from gerkovink/SofieIssue
+|\ \  
+| * | 1f488c6 remove pipe operator
+| * | 4ead406 update readme.md
+|/ /  
+* |   4134b75 Merge pull request #37 from pietjonker/piet
+|\ \  
+| * | f50014b commit assignment 2
+| * | 5ae2b9b Assignment 1 and 2
+* | |   f277a35 Merge pull request #35 from zoedunias/zoedev
+|\ \ \  
+| * | | 1c9aad6 Added Exercise 2
+* | | |   43fb1ed Merge pull request #34 from RianneKraakman/riannedev
+|\ \ \ \  
+| * | | | 75d9293 Add assignment 2
+* | | | |   d3df110 Merge pull request #33 from gerkovink/gerkodev
+|\ \ \ \ \  
+| * \ \ \ \   34954f8 Merge pull request #22 from Goorbergh/ruben_assignment_1
+| |\ \ \ \ \  
+* | \ \ \ \ \   de85f89 Merge pull request #31 from IhnwhiHeo/ihnwhi-week2
+|\ \ \ \ \ \ \  
+| * | | | | | | 6729bad Add files
+| * | | | | | | bb3136b updates
+| * | | | | | | 7451cc7 updates
+| * | | | | | | 6908abc updates
+* | | | | | | |   908ac2d Merge pull request #30 from vvbrs/vivian
+|\ \ \ \ \ \ \ \  
+| * | | | | | | | eb3a34e Added assignment 1 & 2
+| |/ / / / / / /  
+* | | | | | | |   e578b14 Merge pull request #32 from paulinavonstackelberg/Exercise-2
+|\ \ \ \ \ \ \ \  
+| * | | | | | | | dace529 Paulina Ex 2
+| * | | | | | | | c13c9c7 Create Markdown_week 2Paulina.Rmd
+| * | | | | | | | 981ba42 Delete Markdown_week 2Paulina.Rmd
+| * | | | | | | | 2d360d4 Create Markdown_week 2Paulina.Rmd
+| |/ / / / / / /  
+* | | | | | | |   808dbd3 Merge pull request #29 from MaxvanderVelde/Assignmen2.0
+|\ \ \ \ \ \ \ \  
+| * | | | | | | | 0dbbe6b Adding session_info
+| * | | | | | | | 41b9337 Add assignment 2
+| |/ / / / / / /  
+* | | | | | | |   e5b52b2 Merge pull request #27 from SagevdBrand/Sofie-exercise2
+|\ \ \ \ \ \ \ \  
+| * | | | | | | | be1fcc6 Add session info
+| * | | | | | | | ae3bf1e Adding exercise 2
+| |/ / / / / / /  
+* | | | | | | |   816ab86 Merge pull request #26 from thomvolker/thom
+|\ \ \ \ \ \ \ \  
+| * | | | | | | | 0981b57 Say bye.
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log c902093
+commit c9020931678d90d91cfe21778e6ce5b4943e46cb
+Author: Thomas Wise <48682160+thomasjwise@users.noreply.github.com>
+Date:   Wed Oct 28 13:59:23 2020 +0100
+
+    Assignment 3 - Beamer PDF
+
+commit db649539738bb30b63d93053b67891ef6c55037e
+Author: Thomas Wise <48682160+thomasjwise@users.noreply.github.com>
+Date:   Wed Sep 16 14:04:21 2020 +0200
+
+    Assignment 1
+
+commit 21a3b5ac1535703f4ce0d6feb2ccf3703f95eee3
+Merge: 7f0806b f4a11cb
+Author: Gerko Vink <g.vink@uu.nl>
+Date:   Tue Sep 15 20:15:25 2020 +0200
+
+    Merge pull request #2 from gerkovink/gerkodev
+    
+    This image is too large
+
+commit f4a11cbed729bc8454c01866aab4291b3b580d6f
+Author: Gerko Vink <g.vink@uu.nl>
+Date:   Tue Sep 15 20:14:21 2020 +0200
+
+    resize image
+
+commit 7f0806b68387d4f3c8af5c1f27d94b69e90a2d13
+Merge: 9bf1c32 a36ed81
+Author: Gerko Vink <g.vink@uu.nl>
+Date:   Tue Sep 15 20:05:39 2020 +0200
+
+    Merge pull request #1 from gerkovink/gerkodev
+    
+    Added CV and childhood memory
+
+commit a36ed81b3831e6084c2adf661dc4cfb32c4cb5f7
+Author: Gerko Vink <g.vink@uu.nl>
+Date:   Tue Sep 15 19:59:38 2020 +0200
+
+    add childhood memory
+
+commit 9ba9c43437a7f00f5095df55db0c07d7233ad152
+Author: Gerko Vink <g.vink@uu.nl>
+Date:   Tue Sep 15 19:44:12 2020 +0200
+
+    Add CV
+
+commit 9bf1c32ea55b60bce613d65765c18deb522772ff
+Author: Gerko Vink <g.vink@uu.nl>
+Date:   Tue Sep 15 15:52:14 2020 +0200
+
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log c902093 --pretty=oneline
+c9020931678d90d91cfe21778e6ce5b4943e46cb Assignment 3 - Beamer PDF
+db649539738bb30b63d93053b67891ef6c55037e Assignment 1
+21a3b5ac1535703f4ce0d6feb2ccf3703f95eee3 Merge pull request #2 from gerkovink/gerkodev
+f4a11cbed729bc8454c01866aab4291b3b580d6f resize image
+7f0806b68387d4f3c8af5c1f27d94b69e90a2d13 Merge pull request #1 from gerkovink/gerkodev
+a36ed81b3831e6084c2adf661dc4cfb32c4cb5f7 add childhood memory
+9ba9c43437a7f00f5095df55db0c07d7233ad152 Add CV
+9bf1c32ea55b60bce613d65765c18deb522772ff Update .gitignore
+18761716665262f19296fb5d8e7c1720c8cea58a Merge branch 'master' of https://github.com/gerkovink/markup2020
+1ee60aa26142b5f175928d409614b8de84c1ef79 Update .gitignore
+7c3d816264b5629e7bfe112954178648d94a37b4 Delete markup_sticker_SMALL.psd
+37c356ca51b4ed03e96570934f28caf5fcfd75d8 Delete .DS_Store
+d56dd90172d1106117d53102e5053165bc182020 Update .gitignore
+e7b78b592a8000d3a647de3a265c69496adebfe5 Update .gitignore
+fdd923ad2b522d6e4357229ea801d23ec5b16717 update readme
+7e14559d7f7e8676d557c9b73fc43fb3a66a0c3c added sticker
+493609efa7ce659ebebf5a0d0300f23788397e68 Initial commit
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git checkout 21a3b5a
+Note: switching to '21a3b5a'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 21a3b5a Merge pull request #2 from gerkovink/gerkodev
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git switch -   
+Updating files: 100% (173/173), done.
+Previous HEAD position was 21a3b5a Merge pull request #2 from gerkovink/gerkodev
+Switched to branch 'Exercise_wk4'
+Your branch is up to date with 'origin/Exercise_wk4'.
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git checkout -b Wk4_markup 21a3b5a 
+Switched to a new branch 'Wk4_markup'
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % touch add_text_file.txt
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit -a -m 'add text file'
+On branch Wk4_markup
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	add_text_file.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git add -A
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit -a -m 'add text file'
+[Wk4_markup d200e3a] add text file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 add_text_file.txt
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log --pretty=oneline
+d200e3afdff158d93c5ba23d792583afbfb42ec2 (HEAD -> Wk4_markup) add text file
+21a3b5ac1535703f4ce0d6feb2ccf3703f95eee3 Merge pull request #2 from gerkovink/gerkodev
+f4a11cbed729bc8454c01866aab4291b3b580d6f resize image
+7f0806b68387d4f3c8af5c1f27d94b69e90a2d13 Merge pull request #1 from gerkovink/gerkodev
+a36ed81b3831e6084c2adf661dc4cfb32c4cb5f7 add childhood memory
+9ba9c43437a7f00f5095df55db0c07d7233ad152 Add CV
+9bf1c32ea55b60bce613d65765c18deb522772ff Update .gitignore
+18761716665262f19296fb5d8e7c1720c8cea58a Merge branch 'master' of https://github.com/gerkovink/markup2020
+1ee60aa26142b5f175928d409614b8de84c1ef79 Update .gitignore
+7c3d816264b5629e7bfe112954178648d94a37b4 Delete markup_sticker_SMALL.psd
+37c356ca51b4ed03e96570934f28caf5fcfd75d8 Delete .DS_Store
+d56dd90172d1106117d53102e5053165bc182020 Update .gitignore
+e7b78b592a8000d3a647de3a265c69496adebfe5 Update .gitignore
+fdd923ad2b522d6e4357229ea801d23ec5b16717 update readme
+7e14559d7f7e8676d557c9b73fc43fb3a66a0c3c added sticker
+493609efa7ce659ebebf5a0d0300f23788397e68 Initial commit
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % touch add_another_text_file.txt
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git add -A
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit --amend -m "add two text files"
+[Wk4_markup 43fbbb6] add two text files
+ Date: Fri Nov 18 21:11:32 2022 +0100
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 add_another_text_file.txt
+ create mode 100644 add_text_file.txt
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log --pretty=oneline
+43fbbb601e34d3f26bef45d7722aa7608505a605 (HEAD -> Wk4_markup) add two text files
+21a3b5ac1535703f4ce0d6feb2ccf3703f95eee3 Merge pull request #2 from gerkovink/gerkodev
+f4a11cbed729bc8454c01866aab4291b3b580d6f resize image
+7f0806b68387d4f3c8af5c1f27d94b69e90a2d13 Merge pull request #1 from gerkovink/gerkodev
+a36ed81b3831e6084c2adf661dc4cfb32c4cb5f7 add childhood memory
+9ba9c43437a7f00f5095df55db0c07d7233ad152 Add CV
+9bf1c32ea55b60bce613d65765c18deb522772ff Update .gitignore
+18761716665262f19296fb5d8e7c1720c8cea58a Merge branch 'master' of https://github.com/gerkovink/markup2020
+1ee60aa26142b5f175928d409614b8de84c1ef79 Update .gitignore
+7c3d816264b5629e7bfe112954178648d94a37b4 Delete markup_sticker_SMALL.psd
+37c356ca51b4ed03e96570934f28caf5fcfd75d8 Delete .DS_Store
+d56dd90172d1106117d53102e5053165bc182020 Update .gitignore
+e7b78b592a8000d3a647de3a265c69496adebfe5 Update .gitignore
+fdd923ad2b522d6e4357229ea801d23ec5b16717 update readme
+7e14559d7f7e8676d557c9b73fc43fb3a66a0c3c added sticker
+493609efa7ce659ebebf5a0d0300f23788397e68 Initial commit
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git reset --hard 493609e  
+HEAD is now at 493609e Initial commit
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git reflog     
+493609e (HEAD -> Wk4_markup) HEAD@{0}: reset: moving to 493609e
+43fbbb6 HEAD@{1}: commit (amend): add two text files
+d200e3a HEAD@{2}: commit: add text file
+21a3b5a HEAD@{3}: checkout: moving from Exercise_wk4 to Wk4_markup
+176137b (origin/Exercise_wk4, Exercise_wk4) HEAD@{4}: checkout: moving from 21a3b5ac1535703f4ce0d6feb2ccf3703f95eee3 to Exercise_wk4
+21a3b5a HEAD@{5}: checkout: moving from Exercise_wk4 to 21a3b5a
+176137b (origin/Exercise_wk4, Exercise_wk4) HEAD@{6}: checkout: moving from master to Exercise_wk4
+95c6edd (origin/master, origin/HEAD, master) HEAD@{7}: clone: from https://github.com/Ernst-Paul/exercise4.git
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git reset --hard HEAD@{1}
+HEAD is now at 43fbbb6 add two text files
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git reset --soft 493609e 
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit -a -m 'everything in a single commit'
+[Wk4_markup 62919c4] everything in a single commit
+ 8 files changed, 36 insertions(+), 1 deletion(-)
+ create mode 100644 Gerko/Assignment 1/Vink.jpg
+ create mode 100644 Gerko/Assignment 1/Vink.pdf
+ create mode 100644 README.Rmd
+ create mode 100644 add_another_text_file.txt
+ create mode 100644 add_text_file.txt
+ create mode 100644 markup_sticker_SMALL.png
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git log --pretty=oneline    
+62919c493956992de325d80ffe991eddd4121c03 (HEAD -> Wk4_markup) everything in a single commit
+493609efa7ce659ebebf5a0d0300f23788397e68 Initial commit
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git checkout Exercise_wk4
+Updating files: 100% (175/175), done.
+Switched to branch 'Exercise_wk4'
+Your branch is up to date with 'origin/Exercise_wk4'.
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git merge Wk4_markup   
+Auto-merging README.Rmd
+CONFLICT (add/add): Merge conflict in README.Rmd
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git add -A
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit -m 'conflict resolved'
+On branch Exercise_wk4
+Your branch is ahead of 'origin/Exercise_wk4' by 2 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git branch Wk4_epswens       
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git checkout Wk4_epswens
+Switched to branch 'Wk4_epswens'
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git add -A
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % mv add_text_file.txt ernstpaul.txt
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git add -A 
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit -m "ernst paul commit" 
+[Wk4_epswens f2bd9ad] ernst paul commit
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename add_text_file.txt => ernstpaul.txt (100%)
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git push origin Wk4_epswens  
+Username for 'https://github.com': Ernst-Paul
+Password for 'https://Ernst-Paul@github.com': 
+remote: Support for password authentication was removed on August 13, 2021.
+remote: Please see https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls for information on currently recommended modes of authentication.
+fatal: Authentication failed for 'https://github.com/Ernst-Paul/exercise4.git/'
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git commit -m "ernst paul commit" 
+On branch Wk4_epswens
+nothing to commit, working tree clean
+(base) e.p.swens@EPs-MacBook-Pro Exercise 4 % git push origin Wk4_epswens
